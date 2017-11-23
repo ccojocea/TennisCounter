@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Tennis Counter</string>
+    <string name="add_points_p1">Point</string>
+    <string name="add_points_p2">Point</string>
+    <string name="undo">Undo</string>
+    <string name="reset_scores">Reset Scores</string>
+    <string name="sets">Sets</string>
+    <string name="games">Games</string>
+    <string name="points">Points</string>
+    <string name="player_one">Player One</string>
+    <string name="player_two">Player Two</string>
+
 </resources>

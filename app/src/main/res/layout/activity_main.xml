@@ -20,31 +20,36 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player One" />
+                android:text="@string/player_one"
+                android:textSize="@dimen/font_size_xs"/>
 
             <TextView
                 android:id="@+id/player_one_sets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:text="0"
+                android:textSize="@dimen/font_size_small"/>
 
             <TextView
                 android:id="@+id/player_one_games"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:text="0"
+                android:textSize="@dimen/font_size_medium"/>
 
             <TextView
                 android:id="@+id/player_one_points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_large"
                 android:text="0" />
 
             <Button
+                android:id="@+id/add_points_player_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add points"
-                android:onClick="addPointsPlayerOne"/>
+                android:text="@string/add_points_p1"
+                android:onClick="addPointsPlOne"/>
 
         </LinearLayout>
 
@@ -57,30 +62,37 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_xs"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sets"
+                android:text="@string/sets"
+                android:textSize="@dimen/font_size_small"
                 android:textAllCaps="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Games"
+                android:text="@string/games"
+                android:textSize="@dimen/font_size_medium"
                 android:textAllCaps="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Points"
+                android:text="@string/points"
+                android:textSize="@dimen/font_size_large"
                 android:textAllCaps="true"/>
 
             <Button
+                android:id="@+id/undo_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Undo"/>
+                android:text="@string/undo"
+                android:enabled="false"
+                android:onClick="undoLastAction"/>
 
         </LinearLayout>
 
@@ -94,31 +106,36 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Player Two" />
+                android:text="@string/player_two"
+                android:textSize="@dimen/font_size_xs"/>
 
             <TextView
                 android:id="@+id/player_two_sets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_small"
                 android:text="0" />
 
             <TextView
                 android:id="@+id/player_two_games"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:text="0"
+                android:textSize="@dimen/font_size_medium"/>
 
             <TextView
                 android:id="@+id/player_two_points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_large"
                 android:text="0" />
 
             <Button
+                android:id="@+id/add_points_player_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add points"
-                android:onClick="addPointsPlayerTwo"/>
+                android:text="@string/add_points_p2"
+                android:onClick="addPointsPlTwo"/>
 
         </LinearLayout>
 
@@ -129,6 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Reset Scores" />
+        android:text="@string/reset_scores"
+        android:onClick="resetScores"/>
 
 </RelativeLayout>

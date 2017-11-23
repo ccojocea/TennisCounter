@@ -3,24 +3,114 @@ package com.example.android.ccojocea.tenniscounter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     /**
-    * Variables keeping score for both players: Points in a game, Games in a set and Sets
-     */
+    * Variables keeping score for both players: Points in a game, Games in a set and Sets*
+     * Undo variables save scores between button presses
+     * tiebreak variable for tiebreak determination
+     * */
     int setsPlayerOne;
     int setsPlayerTwo;
     int gamesPlayerOne;
     int gamesPlayerTwo;
     int pointsPlayerOne;
     int pointsPlayerTwo;
+    boolean tiebreak;
+    int undoSetsPlayerOne;
+    int undoSetsPlayerTwo;
+    int undoGamesPlayerOne;
+    int undoGamesPlayerTwo;
+    int undoPointsPlayerOne;
+    int undoPointsPlayerTwo;
+    boolean undoTiebreak;
 
+    /**
+     * The one which brings light into darkness!
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    /**
+     * Display all scores
+     */
+    public void displayAll(){
+        displayGamesPlayerOne(gamesPlayerOne);
+        displayGamesPlayerTwo(gamesPlayerTwo);
+        displayPointsPlayerOne(pointsPlayerOne);
+        displayPointsPlayerTwo(pointsPlayerTwo);
+        displaySetPlayerOne(setsPlayerOne);
+        displaySetPlayerTwo(setsPlayerTwo);
+    }
+
+    /**
+     * Set all variables to zero
+     */
+    public void setAllZero(){
+        setsPlayerOne = 0;
+        setsPlayerTwo = 0;
+        gamesPlayerOne = 0;
+        gamesPlayerTwo = 0;
+        pointsPlayerOne = 0;
+        pointsPlayerTwo = 0;
+        tiebreak = false;
+    }
+
+    /**
+     * Save the state of current variables for use in undo
+     */
+    public void undoSave(){
+        undoSetsPlayerOne = setsPlayerOne;
+        undoSetsPlayerTwo = setsPlayerTwo;
+        undoGamesPlayerOne = gamesPlayerOne;
+        undoGamesPlayerTwo = gamesPlayerTwo;
+        undoPointsPlayerOne = pointsPlayerOne;
+        undoPointsPlayerTwo = pointsPlayerTwo;
+        undoTiebreak = tiebreak;
+    }
+
+    /**
+     * Restore the state of variables on undo button press
+     */
+    public void undoRestore(){
+        setsPlayerOne = undoSetsPlayerOne;
+        setsPlayerTwo = undoSetsPlayerTwo;
+        gamesPlayerOne = undoGamesPlayerOne;
+        gamesPlayerTwo = undoGamesPlayerTwo;
+        pointsPlayerOne = undoPointsPlayerOne;
+        pointsPlayerTwo = undoPointsPlayerTwo;
+        tiebreak = undoTiebreak;
+    }
+
+    /**
+     * Save current variables
+     * Reset scores to zero
+     */
+    public void resetScores(View view){
+        Button undoButton = findViewById(R.id.undo_button);
+        undoButton.setEnabled(true);
+
+        undoSave();
+        setAllZero();
+        displayAll();
+    }
+
+    /**
+     * Undo previously added points to player one or two.
+     * Button gets disabled after using.
+     */
+    public void undoLastAction(View view){
+        Button undoButton = findViewById(R.id.undo_button);
+        undoButton.setEnabled(false);
+
+        undoRestore();
+        displayAll();
     }
 
     /**
@@ -71,21 +161,90 @@ public class MainActivity extends AppCompatActivity {
         setScoreView.setText(String.valueOf(points));
     }
 
+    /**
+     * Display the String adv for player one after Deuce (can be either Adv or -)
+     */
     public void displayAdvPlayerOne(String adv){
         TextView setScoreView = findViewById(R.id.player_one_points);
         setScoreView.setText(adv);
     }
 
+    /**
+     * Display the String adv for player two after Deuce (can be either Adv or -)
+     */
     public void displayAdvPlayerTwo(String adv){
         TextView setScoreView = findViewById(R.id.player_two_points);
         setScoreView.setText(adv);
     }
 
     /**
+     * Method called by button press for Player One.
+     * Checks if it's tiebreak or normal game time and adds points as needed.
+     * Also modifies the state of the Undo button to true in case it was previously used.
+     * Goes into the method to add points if it's not tiebreak
+     */
+    public void addPointsPlOne(View view){
+        Button undoButton = findViewById(R.id.undo_button);
+        undoButton.setEnabled(true);
+
+        undoSave();
+
+        if (tiebreak) {
+            boolean check = checkTieOver(pointsPlayerOne, pointsPlayerTwo);
+            if (check){
+                tiebreak = false;
+                setsPlayerOne++;
+                gamesPlayerOne = 0;
+                gamesPlayerTwo = 0;
+                pointsPlayerOne = 0;
+                pointsPlayerTwo = 0;
+                displayAll();
+            } else {
+                pointsPlayerOne++;
+                displayPointsPlayerOne(pointsPlayerOne);
+            }
+
+        } else {
+            addPointsPlayerOne();
+        }
+    }
+
+    /**
+     * Method called by button press for Player Two.
+     * Checks if it's tiebreak or normal game time and adds points as needed.
+     * Also modifies the state of the Undo button to true in case it was previously used.
+     * Goes into the method to add points if it's not tiebreak
+     */
+    public void addPointsPlTwo(View view){
+        Button undoButton = findViewById(R.id.undo_button);
+        undoButton.setEnabled(true);
+
+        undoSave();
+
+        if (tiebreak) {
+            boolean check = checkTieOver(pointsPlayerTwo, pointsPlayerOne);
+            if (check){
+                tiebreak = false;
+                setsPlayerTwo++;
+                gamesPlayerOne = 0;
+                gamesPlayerTwo = 0;
+                pointsPlayerOne = 0;
+                pointsPlayerTwo = 0;
+                displayAll();
+            } else {
+                pointsPlayerTwo++;
+                displayPointsPlayerTwo(pointsPlayerTwo);
+            }
+        } else {
+            addPointsPlayerTwo();
+        }
+    }
+
+    /**
      * Method to add points for player one.
      * Automatically ends games/sets when needed.
      */
-    public void addPointsPlayerOne(View view){
+    public void addPointsPlayerOne(){
         int check = checkGameOver(pointsPlayerOne, pointsPlayerTwo);
         switch (check){
             case 1:
@@ -110,19 +269,49 @@ public class MainActivity extends AppCompatActivity {
                 displayPointsPlayerTwo(pointsPlayerTwo);
                 break;
             case 3:
+                pointsPlayerOne++;
                 displayAdvPlayerOne("Adv");
                 displayAdvPlayerTwo("-");
                 break;
             case 4:
+                pointsPlayerOne++;
                 displayAdvPlayerOne("-");
                 displayAdvPlayerTwo("-");
                 break;
         }
+
+        int checkSet = checkSetOver(gamesPlayerOne, gamesPlayerTwo);
+        switch (checkSet) {
+            //     player 1 wins set.
+            case 1:
+                setsPlayerOne++;
+                gamesPlayerOne = 0;
+                gamesPlayerTwo = 0;
+                pointsPlayerOne = 0;
+                pointsPlayerTwo = 0;
+                displayAll();
+                break;
+            //set just continues, not yet ending
+            case 2:
+                return;
+            //tiebreak time
+            case 3:
+                tiebreak = true;
+                pointsPlayerOne = 0;
+                pointsPlayerTwo = 0;
+                gamesPlayerOne = 6;
+                gamesPlayerTwo = 6;
+                displayAll();
+        }
     }
 
-    public void addPointsPlayerTwo(View view){
-        int check = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
-        switch (check){
+    /**
+     * Method to add points for player two.
+     * Automatically ends games/sets when needed.
+     */
+    public void addPointsPlayerTwo(){
+        int checkGame = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
+        switch (checkGame){
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
@@ -145,14 +334,41 @@ public class MainActivity extends AppCompatActivity {
                 displayPointsPlayerTwo(pointsPlayerTwo);
                 break;
             case 3:
+                pointsPlayerTwo++;
                 displayAdvPlayerTwo("Adv");
                 displayAdvPlayerOne("-");
                 break;
             case 4:
+                pointsPlayerTwo++;
                 displayAdvPlayerOne("-");
                 displayAdvPlayerTwo("-");
                 break;
         }
+
+        int checkSet = checkSetOver(gamesPlayerTwo, gamesPlayerOne);
+        switch (checkSet) {
+            //     player 2 wins set.
+            case 1:
+                setsPlayerTwo++;
+                gamesPlayerOne = 0;
+                gamesPlayerTwo = 0;
+                pointsPlayerOne = 0;
+                pointsPlayerTwo = 0;
+                displayAll();
+                break;
+            //set just continues, not yet ending
+            case 2:
+                return;
+            //tiebreak time
+            case 3:
+                tiebreak = true;
+                pointsPlayerOne = 0;
+                pointsPlayerTwo = 0;
+                gamesPlayerOne = 6;
+                gamesPlayerTwo = 6;
+                displayAll();
+        }
+
     }
 
     /**
@@ -168,13 +384,17 @@ public class MainActivity extends AppCompatActivity {
                 return 1;
             } else if (pointsA < pointsB){
                 return 4;
+            } else if (pointsA == pointsB) {
+                return 3;
             }
         }
         if(pointsA == 40){
-            if(pointsB != 40){
+            if(pointsB < 40){
                 return 1;
             } else if (pointsB ==40) {
                 return 3;
+            } else if (pointsB > 40) {
+                return 4;
             }
         }
         return 2;
@@ -182,8 +402,28 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Verifies if the current set is over in order to increase the sets score
+     * return 1 if set is over, player A wins set.
+     * return 2 if set just continues, not yet ending
+     * return 3 if tiebreak should start
      */
-    //public boolean checkSetOver (int games) {
+    public int checkSetOver (int gamesA, int gamesB) {
+        if(gamesA >= 6 & ((gamesA - gamesB) >= 2)){
+            return 1;
+        } else if (gamesA == 6 & gamesB == 6){
+            return 3;
+        }
+        return 2;
+    }
 
-    //}
+    /**
+     * Return true if tie-break is won by player A
+     * Return falso if tie-break continues
+     */
+    public boolean checkTieOver(int pointsA, int pointsB){
+        if ((pointsA+1 >= 7) & ((pointsA+1 - pointsB) >=2)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
