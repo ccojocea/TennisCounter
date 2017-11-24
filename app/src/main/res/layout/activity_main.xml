@@ -13,6 +13,7 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
+            android:id="@+id/lin_layout_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -20,6 +21,7 @@
             android:gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/player_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/player_one"
@@ -72,12 +74,14 @@
             android:gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/empty_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_size_xs"
                 android:layout_marginBottom="@dimen/layout_vertical_margin"/>
 
             <TextView
+                android:id="@+id/sets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sets"
@@ -86,6 +90,7 @@
                 android:layout_marginBottom="@dimen/layout_vertical_margin"/>
 
             <TextView
+                android:id="@+id/games"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/games"
@@ -94,6 +99,7 @@
                 android:layout_marginBottom="@dimen/layout_vertical_margin"/>
 
             <TextView
+                android:id="@+id/points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/points"
@@ -112,6 +118,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lin_layout_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -119,6 +126,7 @@
             android:gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/player_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/player_two"

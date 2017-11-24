@@ -1,5 +1,6 @@
 package com.example.android.ccojocea.tenniscounter;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("setsPlayerOne", setsPlayerOne);
+        outState.putInt("setsPlayerTwo", setsPlayerTwo);
+        outState.putInt("gamesPlayerOne", gamesPlayerOne);
+        outState.putInt("gamesPlayerTwo", gamesPlayerTwo);
+        outState.putInt("pointsPlayerOne", pointsPlayerOne);
+        outState.putInt("pointsPlayerTwo", pointsPlayerTwo);
+        outState.putInt("undoSetsPlayerOne", undoSetsPlayerOne);
+        outState.putInt("undoSetsPlayerTwo", undoSetsPlayerTwo);
+        outState.putInt("undoGamesPlayerOne", undoGamesPlayerOne);
+        outState.putInt("undoGamesPlayerTwo", undoGamesPlayerTwo);
+        outState.putInt("undoPointsPlayerOne", undoPointsPlayerOne);
+        outState.putInt("undoPointsPlayerTwo", undoPointsPlayerTwo);
+        outState.putBoolean("tiebreak", tiebreak);
+        outState.putBoolean("undoTiebreak", undoTiebreak);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        setsPlayerOne = savedInstanceState.getInt("setsPlayerOne");
+        setsPlayerTwo = savedInstanceState.getInt("setsPlayerTwo");
+        gamesPlayerOne = savedInstanceState.getInt("gamesPlayerOne");
+        gamesPlayerTwo = savedInstanceState.getInt("gamesPlayerTwo");
+        pointsPlayerOne = savedInstanceState.getInt("pointsPlayerOne");
+        pointsPlayerTwo = savedInstanceState.getInt("pointsPlayerTwo");
+        tiebreak = savedInstanceState.getBoolean("tiebreak");
+        undoSetsPlayerOne = savedInstanceState.getInt("undoSetsPlayerOne");
+        undoSetsPlayerTwo = savedInstanceState.getInt("undoSetsPlayerTwo");
+        undoGamesPlayerOne = savedInstanceState.getInt("undoGamesPlayerOne");
+        undoGamesPlayerTwo = savedInstanceState.getInt("undoGamesPlayerTwo");
+        undoPointsPlayerOne = savedInstanceState.getInt("undoPointsPlayerOne");
+        undoPointsPlayerTwo = savedInstanceState.getInt("undoPointsPlayerTwo");
+        undoTiebreak = savedInstanceState.getBoolean("undoTiebreak");
+        displayAll();
     }
 
     /**
