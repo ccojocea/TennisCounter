@@ -1,6 +1,5 @@
 package com.example.android.ccojocea.tenniscounter;
 
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +27,15 @@ public class MainActivity extends AppCompatActivity {
     int undoPointsPlayerOne;
     int undoPointsPlayerTwo;
     boolean undoTiebreak;
+
+    int acesPlayerOne;
+    int acesPlayerTwo;
+    int unforcedPlayerOne;
+    int unforcedPlayerTwo;
+    int winnersPlayerOne;
+    int winnersPlayerTwo;
+    int doubleFaultPlayerOne;
+    int getDoubleFaultPlayerTwo;
 
     /**
      * The one which brings light into darkness!
@@ -142,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         undoSave();
         setAllZero();
         displayAll();
+        displayPoints("Points");
     }
 
     /**
@@ -156,7 +165,24 @@ public class MainActivity extends AppCompatActivity {
 
         undoRestore();
         displayAll();
-    }
+        if (pointsPlayerOne > 40 | pointsPlayerTwo > 40) {
+            if (pointsPlayerOne - pointsPlayerTwo > 0){
+                displayAdvPlayerOne("Adv");
+                displayAdvPlayerTwo("-");
+            } else if (pointsPlayerOne - pointsPlayerTwo < 0){
+                displayAdvPlayerOne("-");
+                displayAdvPlayerTwo("Adv");
+            } else {
+                displayAdvPlayerOne("-");
+                displayAdvPlayerTwo("-");
+            }
+        }
+        if (pointsPlayerOne >= 40 & pointsPlayerTwo >= 40 & pointsPlayerOne==pointsPlayerTwo){
+            displayPoints("Deuce");
+        } else if (pointsPlayerOne != pointsPlayerTwo){
+            displayPoints("Points");
+        }
+        }
 
     /**
      * Display set score for player one
@@ -290,6 +316,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Modify the Points text view in case of Deuce
+     */
+    public void displayPoints(String points){
+        TextView pointsView = findViewById(R.id.points);
+        pointsView.setText(points);
+    }
+
+    /**
      * Method to add points for player one.
      * Automatically ends games/sets when needed.
      */
@@ -300,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
                 gamesPlayerOne++;
+                displayPoints("Points");
                 displayGamesPlayerOne(gamesPlayerOne);
                 displayPointsPlayerOne(pointsPlayerOne);
                 displayPointsPlayerTwo(pointsPlayerTwo);
@@ -311,6 +346,9 @@ public class MainActivity extends AppCompatActivity {
                     pointsPlayerOne = 30;
                 } else if (pointsPlayerOne == 30) {
                     pointsPlayerOne = 40;
+                    if (pointsPlayerOne == pointsPlayerTwo){
+                        displayPoints("Deuce");
+                    }
                 } else if (pointsPlayerOne > 30) {
                     pointsPlayerOne++;
                 }
@@ -321,11 +359,13 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne++;
                 displayAdvPlayerOne("Adv");
                 displayAdvPlayerTwo("-");
+                displayPoints("Points");
                 break;
             case 4:
                 pointsPlayerOne++;
                 displayAdvPlayerOne("-");
                 displayAdvPlayerTwo("-");
+                displayPoints("Deuce");
                 break;
         }
 
@@ -365,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
                 gamesPlayerTwo++;
+                displayPoints("Points");
                 displayGamesPlayerTwo(gamesPlayerTwo);
                 displayPointsPlayerOne(pointsPlayerOne);
                 displayPointsPlayerTwo(pointsPlayerTwo);
@@ -376,6 +417,9 @@ public class MainActivity extends AppCompatActivity {
                     pointsPlayerTwo = 30;
                 } else if (pointsPlayerTwo == 30) {
                     pointsPlayerTwo = 40;
+                    if (pointsPlayerOne == pointsPlayerTwo){
+                        displayPoints("Deuce");
+                    }
                 } else if (pointsPlayerTwo > 30) {
                     pointsPlayerTwo++;
                 }
@@ -386,9 +430,11 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerTwo++;
                 displayAdvPlayerTwo("Adv");
                 displayAdvPlayerOne("-");
+                displayPoints("Points");
                 break;
             case 4:
                 pointsPlayerTwo++;
+                displayPoints("Deuce");
                 displayAdvPlayerOne("-");
                 displayAdvPlayerTwo("-");
                 break;

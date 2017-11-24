@@ -7,8 +7,8 @@
     android:background="@color/colorPrimary"
     tools:context="com.example.android.ccojocea.tenniscounter.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/lin_layout"
+    <RelativeLayout
+        android:id="@+id/rel_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -17,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="2"
             android:gravity="center_horizontal">
 
             <TextView
@@ -56,12 +55,12 @@
                 android:text="0"
                 android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/add_points_player_one"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_points_p1"
-                android:onClick="addPointsPlOne" />
+                android:layout_width="@dimen/img_button_size"
+                android:layout_height="@dimen/img_button_size"
+                android:onClick="addPointsPlOne"
+                android:background="@drawable/ballbutton"/>
 
         </LinearLayout>
 
@@ -70,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal">
 
             <TextView
@@ -100,20 +99,23 @@
 
             <TextView
                 android:id="@+id/points"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:text="@string/points"
                 android:textSize="@dimen/font_size_large"
+                android:gravity="center_horizontal"
                 android:textAllCaps="true"
                 android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
 
             <Button
                 android:id="@+id/undo_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="@dimen/img_button_size"
                 android:text="@string/undo"
                 android:enabled="false"
-                android:onClick="undoLastAction" />
+                android:onClick="undoLastAction"
+                android:textSize="32dp"
+                android:background="@drawable/tennisracket"/>
 
         </LinearLayout>
 
@@ -121,6 +123,7 @@
             android:id="@+id/lin_layout_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:orientation="vertical"
             android:layout_weight="2"
             android:gravity="center_horizontal">
@@ -161,16 +164,16 @@
                 android:text="0"
                 android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/add_points_player_two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_points_p2"
-                android:onClick="addPointsPlTwo" />
+                android:layout_width="@dimen/img_button_size"
+                android:layout_height="@dimen/img_button_size"
+                android:onClick="addPointsPlTwo"
+                android:background="@drawable/ballbutton"/>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/reset_button"
