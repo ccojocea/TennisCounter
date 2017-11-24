@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
     }
 
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
     public void resetScores(View view){
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(true);
+        Button resetButton = findViewById(R.id.reset_button);
+        resetButton.setEnabled(false);
 
         undoSave();
         setAllZero();
@@ -108,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
     public void undoLastAction(View view){
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(false);
+        Button resetButton = findViewById(R.id.reset_button);
+        resetButton.setEnabled(true);
 
         undoRestore();
         displayAll();
@@ -186,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
     public void addPointsPlOne(View view){
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(true);
+        Button resetButton = findViewById(R.id.reset_button);
+        resetButton.setEnabled(true);
 
         undoSave();
 
@@ -218,6 +225,8 @@ public class MainActivity extends AppCompatActivity {
     public void addPointsPlTwo(View view){
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(true);
+        Button resetButton = findViewById(R.id.reset_button);
+        resetButton.setEnabled(true);
 
         undoSave();
 

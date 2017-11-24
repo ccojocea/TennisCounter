@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="layout_vertical_margin">16dp</dimen>
+    <dimen name="layout_vertical_margin_big">32dp</dimen>
     <dimen name="layout_horizontal_margin">16dp</dimen>
     <dimen name="layout_margin">16dp</dimen>
+
+    <dimen name="padding_button">16dp</dimen>
 
     <dimen name="font_size_large">32sp</dimen>
     <dimen name="font_size_medium">24sp</dimen>
