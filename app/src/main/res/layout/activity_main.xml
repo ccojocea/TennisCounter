@@ -99,11 +99,11 @@
 
             <TextView
                 android:id="@+id/points"
-                android:layout_width="130dp"
+                android:layout_width="@dimen/points_horizontal"
                 android:layout_height="wrap_content"
                 android:text="@string/points"
                 android:textSize="@dimen/font_size_large"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:textAllCaps="true"
                 android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
 

@@ -2,6 +2,7 @@ package com.example.android.ccojocea.tenniscounter;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -9,10 +10,10 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     /**
-    * Variables keeping score for both players: Points in a game, Games in a set and Sets*
+     * Variables keeping score for both players: Points in a game, Games in a set and Sets*
      * Undo variables save scores between button presses
      * tiebreak variable for tiebreak determination
-     * */
+     */
     int setsPlayerOne;
     int setsPlayerTwo;
     int gamesPlayerOne;
@@ -27,15 +28,7 @@ public class MainActivity extends AppCompatActivity {
     int undoPointsPlayerOne;
     int undoPointsPlayerTwo;
     boolean undoTiebreak;
-
-    int acesPlayerOne;
-    int acesPlayerTwo;
-    int unforcedPlayerOne;
-    int unforcedPlayerTwo;
-    int winnersPlayerOne;
-    int winnersPlayerTwo;
-    int doubleFaultPlayerOne;
-    int getDoubleFaultPlayerTwo;
+    boolean resetDuringTie;
 
     /**
      * The one which brings light into darkness!
@@ -64,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("undoPointsPlayerTwo", undoPointsPlayerTwo);
         outState.putBoolean("tiebreak", tiebreak);
         outState.putBoolean("undoTiebreak", undoTiebreak);
+        outState.putBoolean("resetDuringTie", resetDuringTie);
     }
 
     @Override
@@ -83,13 +77,14 @@ public class MainActivity extends AppCompatActivity {
         undoPointsPlayerOne = savedInstanceState.getInt("undoPointsPlayerOne");
         undoPointsPlayerTwo = savedInstanceState.getInt("undoPointsPlayerTwo");
         undoTiebreak = savedInstanceState.getBoolean("undoTiebreak");
+        resetDuringTie = savedInstanceState.getBoolean("resetDuringTie");
         displayAll();
     }
 
     /**
      * Display all scores
      */
-    public void displayAll(){
+    public void displayAll() {
         displayGamesPlayerOne(gamesPlayerOne);
         displayGamesPlayerTwo(gamesPlayerTwo);
         displayPointsPlayerOne(pointsPlayerOne);
@@ -101,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Set all variables to zero
      */
-    public void setAllZero(){
+    public void setAllZero() {
         setsPlayerOne = 0;
         setsPlayerTwo = 0;
         gamesPlayerOne = 0;
@@ -114,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Save the state of current variables for use in undo
      */
-    public void undoSave(){
+    public void undoSave() {
         undoSetsPlayerOne = setsPlayerOne;
         undoSetsPlayerTwo = setsPlayerTwo;
         undoGamesPlayerOne = gamesPlayerOne;
@@ -127,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Restore the state of variables on undo button press
      */
-    public void undoRestore(){
+    public void undoRestore() {
         setsPlayerOne = undoSetsPlayerOne;
         setsPlayerTwo = undoSetsPlayerTwo;
         gamesPlayerOne = undoGamesPlayerOne;
@@ -141,12 +136,17 @@ public class MainActivity extends AppCompatActivity {
      * Save current variables
      * Reset scores to zero
      */
-    public void resetScores(View view){
+    public void resetScores(View view) {
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(true);
         Button resetButton = findViewById(R.id.reset_button);
         resetButton.setEnabled(false);
 
+        if (tiebreak) {
+            resetDuringTie = true;
+        } else {
+            resetDuringTie = false;
+        }
         undoSave();
         setAllZero();
         displayAll();
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
      * Undo previously added points to player one or two.
      * Button gets disabled after using.
      */
-    public void undoLastAction(View view){
+    public void undoLastAction(View view) {
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(false);
         Button resetButton = findViewById(R.id.reset_button);
@@ -166,10 +166,10 @@ public class MainActivity extends AppCompatActivity {
         undoRestore();
         displayAll();
         if (pointsPlayerOne > 40 | pointsPlayerTwo > 40) {
-            if (pointsPlayerOne - pointsPlayerTwo > 0){
+            if (pointsPlayerOne - pointsPlayerTwo > 0) {
                 displayAdvPlayerOne("Adv");
                 displayAdvPlayerTwo("-");
-            } else if (pointsPlayerOne - pointsPlayerTwo < 0){
+            } else if (pointsPlayerOne - pointsPlayerTwo < 0) {
                 displayAdvPlayerOne("-");
                 displayAdvPlayerTwo("Adv");
             } else {
@@ -177,17 +177,19 @@ public class MainActivity extends AppCompatActivity {
                 displayAdvPlayerTwo("-");
             }
         }
-        if (pointsPlayerOne >= 40 & pointsPlayerTwo >= 40 & pointsPlayerOne==pointsPlayerTwo){
+        if (tiebreak) {
+            displayPoints("Tie-break");
+        } else if (pointsPlayerOne >= 40 & pointsPlayerTwo >= 40 & pointsPlayerOne == pointsPlayerTwo) {
             displayPoints("Deuce");
-        } else if (pointsPlayerOne != pointsPlayerTwo){
+        } else if (pointsPlayerOne != pointsPlayerTwo) {
             displayPoints("Points");
         }
-        }
+    }
 
     /**
      * Display set score for player one
      */
-    public void displaySetPlayerOne(int set){
+    public void displaySetPlayerOne(int set) {
         TextView setScoreView = findViewById(R.id.player_one_sets);
         setScoreView.setText(String.valueOf(set));
     }
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display set score for player two
      */
-    public void displaySetPlayerTwo(int set){
+    public void displaySetPlayerTwo(int set) {
         TextView setScoreView = findViewById(R.id.player_two_sets);
         setScoreView.setText(String.valueOf(set));
     }
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display games score for player one
      */
-    public void displayGamesPlayerOne(int games){
+    public void displayGamesPlayerOne(int games) {
         TextView setScoreView = findViewById(R.id.player_one_games);
         setScoreView.setText(String.valueOf(games));
     }
@@ -211,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display games score for player two
      */
-    public void displayGamesPlayerTwo(int games){
+    public void displayGamesPlayerTwo(int games) {
         TextView setScoreView = findViewById(R.id.player_two_games);
         setScoreView.setText(String.valueOf(games));
     }
@@ -219,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display points score for player one
      */
-    public void displayPointsPlayerOne(int points){
+    public void displayPointsPlayerOne(int points) {
         TextView setScoreView = findViewById(R.id.player_one_points);
         setScoreView.setText(String.valueOf(points));
     }
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display points score for player two
      */
-    public void displayPointsPlayerTwo(int points){
+    public void displayPointsPlayerTwo(int points) {
         TextView setScoreView = findViewById(R.id.player_two_points);
         setScoreView.setText(String.valueOf(points));
     }
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display the String adv for player one after Deuce (can be either Adv or -)
      */
-    public void displayAdvPlayerOne(String adv){
+    public void displayAdvPlayerOne(String adv) {
         TextView setScoreView = findViewById(R.id.player_one_points);
         setScoreView.setText(adv);
     }
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display the String adv for player two after Deuce (can be either Adv or -)
      */
-    public void displayAdvPlayerTwo(String adv){
+    public void displayAdvPlayerTwo(String adv) {
         TextView setScoreView = findViewById(R.id.player_two_points);
         setScoreView.setText(adv);
     }
@@ -254,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
      * Also modifies the state of the Undo button to true in case it was previously used.
      * Goes into the method to add points if it's not tiebreak
      */
-    public void addPointsPlOne(View view){
+    public void addPointsPlOne(View view) {
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(true);
         Button resetButton = findViewById(R.id.reset_button);
@@ -264,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (tiebreak) {
             boolean check = checkTieOver(pointsPlayerOne, pointsPlayerTwo);
-            if (check){
+            if (check) {
                 tiebreak = false;
                 setsPlayerOne++;
                 gamesPlayerOne = 0;
@@ -272,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
                 displayAll();
+                displayPoints("Points");
             } else {
                 pointsPlayerOne++;
                 displayPointsPlayerOne(pointsPlayerOne);
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
      * Also modifies the state of the Undo button to true in case it was previously used.
      * Goes into the method to add points if it's not tiebreak
      */
-    public void addPointsPlTwo(View view){
+    public void addPointsPlTwo(View view) {
         Button undoButton = findViewById(R.id.undo_button);
         undoButton.setEnabled(true);
         Button resetButton = findViewById(R.id.reset_button);
@@ -298,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (tiebreak) {
             boolean check = checkTieOver(pointsPlayerTwo, pointsPlayerOne);
-            if (check){
+            if (check) {
                 tiebreak = false;
                 setsPlayerTwo++;
                 gamesPlayerOne = 0;
@@ -306,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
                 displayAll();
+                displayPoints("Points");
             } else {
                 pointsPlayerTwo++;
                 displayPointsPlayerTwo(pointsPlayerTwo);
@@ -318,18 +322,28 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Modify the Points text view in case of Deuce
      */
-    public void displayPoints(String points){
+    public void displayPoints(String points) {
         TextView pointsView = findViewById(R.id.points);
         pointsView.setText(points);
+
+        int height;
+
+        if (tiebreak) {
+            height = pointsView.getHeight();
+            pointsView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_medium));
+            pointsView.setHeight(height);
+        } else {
+            pointsView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_large));
+        }
     }
 
     /**
      * Method to add points for player one.
      * Automatically ends games/sets when needed.
      */
-    public void addPointsPlayerOne(){
+    public void addPointsPlayerOne() {
         int check = checkGameOver(pointsPlayerOne, pointsPlayerTwo);
-        switch (check){
+        switch (check) {
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
@@ -340,13 +354,13 @@ public class MainActivity extends AppCompatActivity {
                 displayPointsPlayerTwo(pointsPlayerTwo);
                 break;
             case 2:
-                if (pointsPlayerOne == 0){
+                if (pointsPlayerOne == 0) {
                     pointsPlayerOne = 15;
                 } else if (pointsPlayerOne == 15) {
                     pointsPlayerOne = 30;
                 } else if (pointsPlayerOne == 30) {
                     pointsPlayerOne = 40;
-                    if (pointsPlayerOne == pointsPlayerTwo){
+                    if (pointsPlayerOne == pointsPlayerTwo) {
                         displayPoints("Deuce");
                     }
                 } else if (pointsPlayerOne > 30) {
@@ -391,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
                 gamesPlayerOne = 6;
                 gamesPlayerTwo = 6;
                 displayAll();
+                displayPoints("Tie-Break");
         }
     }
 
@@ -398,9 +413,9 @@ public class MainActivity extends AppCompatActivity {
      * Method to add points for player two.
      * Automatically ends games/sets when needed.
      */
-    public void addPointsPlayerTwo(){
+    public void addPointsPlayerTwo() {
         int checkGame = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
-        switch (checkGame){
+        switch (checkGame) {
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
@@ -411,13 +426,13 @@ public class MainActivity extends AppCompatActivity {
                 displayPointsPlayerTwo(pointsPlayerTwo);
                 break;
             case 2:
-                if (pointsPlayerTwo == 0){
+                if (pointsPlayerTwo == 0) {
                     pointsPlayerTwo = 15;
                 } else if (pointsPlayerTwo == 15) {
                     pointsPlayerTwo = 30;
                 } else if (pointsPlayerTwo == 30) {
                     pointsPlayerTwo = 40;
-                    if (pointsPlayerOne == pointsPlayerTwo){
+                    if (pointsPlayerOne == pointsPlayerTwo) {
                         displayPoints("Deuce");
                     }
                 } else if (pointsPlayerTwo > 30) {
@@ -462,6 +477,7 @@ public class MainActivity extends AppCompatActivity {
                 gamesPlayerOne = 6;
                 gamesPlayerTwo = 6;
                 displayAll();
+                displayPoints("Tie-Break");
         }
 
     }
@@ -473,20 +489,20 @@ public class MainActivity extends AppCompatActivity {
      * returns 3 if score is 40-40 so it should continue on advantages
      * returns 4 if score before pushing button was Advantage for player B
      */
-    public int checkGameOver (int pointsA, int pointsB){
-        if(pointsA > 40) {
-            if(pointsA > pointsB){
+    public int checkGameOver(int pointsA, int pointsB) {
+        if (pointsA > 40) {
+            if (pointsA > pointsB) {
                 return 1;
-            } else if (pointsA < pointsB){
+            } else if (pointsA < pointsB) {
                 return 4;
             } else if (pointsA == pointsB) {
                 return 3;
             }
         }
-        if(pointsA == 40){
-            if(pointsB < 40){
+        if (pointsA == 40) {
+            if (pointsB < 40) {
                 return 1;
-            } else if (pointsB ==40) {
+            } else if (pointsB == 40) {
                 return 3;
             } else if (pointsB > 40) {
                 return 4;
@@ -501,10 +517,10 @@ public class MainActivity extends AppCompatActivity {
      * return 2 if set just continues, not yet ending
      * return 3 if tiebreak should start
      */
-    public int checkSetOver (int gamesA, int gamesB) {
-        if(gamesA >= 6 & ((gamesA - gamesB) >= 2)){
+    public int checkSetOver(int gamesA, int gamesB) {
+        if (gamesA >= 6 & ((gamesA - gamesB) >= 2)) {
             return 1;
-        } else if (gamesA == 6 & gamesB == 6){
+        } else if (gamesA == 6 & gamesB == 6) {
             return 3;
         }
         return 2;
@@ -514,8 +530,8 @@ public class MainActivity extends AppCompatActivity {
      * Return true if tie-break is won by player A
      * Return falso if tie-break continues
      */
-    public boolean checkTieOver(int pointsA, int pointsB){
-        if ((pointsA+1 >= 7) & ((pointsA+1 - pointsB) >=2)){
+    public boolean checkTieOver(int pointsA, int pointsB) {
+        if ((pointsA + 1 >= 7) & ((pointsA + 1 - pointsB) >= 2)) {
             return true;
         } else {
             return false;

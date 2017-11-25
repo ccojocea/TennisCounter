@@ -12,5 +12,7 @@
     <dimen name="font_size_small">20sp</dimen>
     <dimen name="font_size_xs">16sp</dimen>
 
+    <dimen name="points_horizontal">130dp</dimen>
+
     <dimen name="img_button_size">65dp</dimen>
 </resources>
