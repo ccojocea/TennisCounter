@@ -1,12 +1,11 @@
 package com.example.android.ccojocea.tenniscounter;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -43,6 +42,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /**
+         * Check screen dimention to determine if orientation change is allowed.
+         * https://stackoverflow.com/questions/15052576/prevent-android-orientation-change-on-certain-devices
+         */
+        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        switch (screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            default:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                break;
+        }
     }
 
     @Override
