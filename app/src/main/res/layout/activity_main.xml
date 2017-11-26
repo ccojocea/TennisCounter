@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/layout_margin"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/courtnetdark"
     tools:context="com.example.android.ccojocea.tenniscounter.MainActivity">
 
     <RelativeLayout
@@ -26,7 +26,11 @@
                 android:text="@string/player_one"
                 android:textSize="@dimen/font_size_xs"
                 android:textColor="@color/colorTennisBall"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/player_one_sets"
@@ -35,7 +39,11 @@
                 android:text="0"
                 android:textSize="@dimen/font_size_small"
                 android:textColor="@color/colorTennisBall"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/player_one_games"
@@ -44,7 +52,11 @@
                 android:text="0"
                 android:textSize="@dimen/font_size_medium"
                 android:textColor="@color/colorTennisBall"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/player_one_points"
@@ -53,7 +65,11 @@
                 android:textSize="@dimen/font_size_large"
                 android:textColor="@color/colorTennisBall"
                 android:text="0"
-                android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin_big"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <ImageButton
                 android:id="@+id/add_points_player_one"
@@ -86,7 +102,12 @@
                 android:text="@string/sets"
                 android:textSize="@dimen/font_size_small"
                 android:textAllCaps="true"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:textColor="@color/colortextlight"
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/games"
@@ -95,7 +116,12 @@
                 android:text="@string/games"
                 android:textSize="@dimen/font_size_medium"
                 android:textAllCaps="true"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:textColor="@color/colortextlight"
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/points"
@@ -104,8 +130,13 @@
                 android:text="@string/points"
                 android:textSize="@dimen/font_size_large"
                 android:gravity="center"
+                android:textColor="@color/colortextlight"
                 android:textAllCaps="true"
-                android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin_big"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <Button
                 android:id="@+id/undo_button"
@@ -115,6 +146,7 @@
                 android:enabled="false"
                 android:onClick="undoLastAction"
                 android:textSize="32dp"
+                android:textColor="@color/undocolor"
                 android:background="@drawable/tennisracket"/>
 
         </LinearLayout>
@@ -135,7 +167,11 @@
                 android:text="@string/player_two"
                 android:textColor="@color/colorTennisBall"
                 android:textSize="@dimen/font_size_xs"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/player_two_sets"
@@ -144,7 +180,11 @@
                 android:textColor="@color/colorTennisBall"
                 android:textSize="@dimen/font_size_small"
                 android:text="0"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/player_two_games"
@@ -153,7 +193,11 @@
                 android:text="0"
                 android:textSize="@dimen/font_size_medium"
                 android:textColor="@color/colorTennisBall"
-                android:layout_marginBottom="@dimen/layout_vertical_margin"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <TextView
                 android:id="@+id/player_two_points"
@@ -162,7 +206,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/font_size_large"
                 android:text="0"
-                android:layout_marginBottom="@dimen/layout_vertical_margin_big"/>
+                android:layout_marginBottom="@dimen/layout_vertical_margin_big"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="1"/>
 
             <ImageButton
                 android:id="@+id/add_points_player_two"

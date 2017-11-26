@@ -1,9 +1,12 @@
 package com.example.android.ccojocea.tenniscounter;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,15 +23,17 @@ public class MainActivity extends AppCompatActivity {
     int gamesPlayerTwo;
     int pointsPlayerOne;
     int pointsPlayerTwo;
-    boolean tiebreak;
     int undoSetsPlayerOne;
     int undoSetsPlayerTwo;
     int undoGamesPlayerOne;
     int undoGamesPlayerTwo;
     int undoPointsPlayerOne;
     int undoPointsPlayerTwo;
+    boolean tiebreak;
     boolean undoTiebreak;
     boolean resetDuringTie;
+    boolean undoState;
+    boolean resetState;
 
     /**
      * The one which brings light into darkness!
@@ -36,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
     }
 
     @Override
@@ -58,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("tiebreak", tiebreak);
         outState.putBoolean("undoTiebreak", undoTiebreak);
         outState.putBoolean("resetDuringTie", resetDuringTie);
+        outState.putBoolean("undoState", undoState);
+        outState.putBoolean("resetState", resetState);
     }
 
     @Override
@@ -69,15 +76,31 @@ public class MainActivity extends AppCompatActivity {
         gamesPlayerTwo = savedInstanceState.getInt("gamesPlayerTwo");
         pointsPlayerOne = savedInstanceState.getInt("pointsPlayerOne");
         pointsPlayerTwo = savedInstanceState.getInt("pointsPlayerTwo");
-        tiebreak = savedInstanceState.getBoolean("tiebreak");
         undoSetsPlayerOne = savedInstanceState.getInt("undoSetsPlayerOne");
         undoSetsPlayerTwo = savedInstanceState.getInt("undoSetsPlayerTwo");
         undoGamesPlayerOne = savedInstanceState.getInt("undoGamesPlayerOne");
         undoGamesPlayerTwo = savedInstanceState.getInt("undoGamesPlayerTwo");
         undoPointsPlayerOne = savedInstanceState.getInt("undoPointsPlayerOne");
         undoPointsPlayerTwo = savedInstanceState.getInt("undoPointsPlayerTwo");
+        tiebreak = savedInstanceState.getBoolean("tiebreak");
         undoTiebreak = savedInstanceState.getBoolean("undoTiebreak");
         resetDuringTie = savedInstanceState.getBoolean("resetDuringTie");
+        undoState = savedInstanceState.getBoolean("undoState");
+        resetState = savedInstanceState.getBoolean("resetState");
+        if(undoState){
+            Button undoButton = findViewById(R.id.undo_button);
+            undoButton.setEnabled(true);
+        } else {
+            Button undoButton = findViewById(R.id.undo_button);
+            undoButton.setEnabled(false);
+        }
+        if(resetState){
+            Button resetButton = findViewById(R.id.reset_button);
+            resetButton.setEnabled(true);
+        } else {
+            Button resetButton = findViewById(R.id.reset_button);
+            resetButton.setEnabled(false);
+        }
         displayAll();
     }
 
@@ -141,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setEnabled(true);
         Button resetButton = findViewById(R.id.reset_button);
         resetButton.setEnabled(false);
+        undoState = true;
+        resetState = false;
 
         if (tiebreak) {
             resetDuringTie = true;
@@ -162,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setEnabled(false);
         Button resetButton = findViewById(R.id.reset_button);
         resetButton.setEnabled(true);
+        undoState = false;
+        resetState = true;
 
         undoRestore();
         displayAll();
@@ -261,6 +288,8 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setEnabled(true);
         Button resetButton = findViewById(R.id.reset_button);
         resetButton.setEnabled(true);
+        undoState = true;
+        resetState = true;
 
         undoSave();
 
@@ -296,6 +325,8 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setEnabled(true);
         Button resetButton = findViewById(R.id.reset_button);
         resetButton.setEnabled(true);
+        undoState = true;
+        resetState = true;
 
         undoSave();
 
