@@ -145,7 +145,7 @@
                 android:text="@string/undo"
                 android:enabled="false"
                 android:onClick="undoLastAction"
-                android:textSize="32dp"
+                android:textSize="32sp"
                 android:textColor="@color/undocolor"
                 android:shadowColor="@android:color/black"
                 android:shadowDx="-2"
@@ -161,7 +161,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:orientation="vertical"
-            android:layout_weight="2"
             android:gravity="center_horizontal">
 
             <TextView

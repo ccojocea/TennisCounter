@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -16,36 +17,34 @@ public class MainActivity extends AppCompatActivity {
      * Undo variables save scores between button presses
      * tiebreak variable for tiebreak determination
      */
-    int setsPlayerOne;
-    int setsPlayerTwo;
-    int gamesPlayerOne;
-    int gamesPlayerTwo;
-    int pointsPlayerOne;
-    int pointsPlayerTwo;
-    int undoSetsPlayerOne;
-    int undoSetsPlayerTwo;
-    int undoGamesPlayerOne;
-    int undoGamesPlayerTwo;
-    int undoPointsPlayerOne;
-    int undoPointsPlayerTwo;
-    boolean tiebreak;
-    boolean undoTiebreak;
-    boolean resetDuringTie;
-    boolean undoState;
-    boolean resetState;
+    private int setsPlayerOne;
+    private int setsPlayerTwo;
+    private int gamesPlayerOne;
+    private int gamesPlayerTwo;
+    private int pointsPlayerOne;
+    private int pointsPlayerTwo;
+    private int undoSetsPlayerOne;
+    private int undoSetsPlayerTwo;
+    private int undoGamesPlayerOne;
+    private int undoGamesPlayerTwo;
+    private int undoPointsPlayerOne;
+    private int undoPointsPlayerTwo;
+    private boolean tiebreak;
+    private boolean undoTiebreak;
+    private boolean resetDuringTie;
+    private boolean undoState;
+    private boolean resetState;
 
     /**
      * The one which brings light into darkness!
+     * Check screen dimension to determine if orientation change is allowed.
+     * https://stackoverflow.com/questions/15052576/prevent-android-orientation-change-on-certain-devices
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * Check screen dimention to determine if orientation change is allowed.
-         * https://stackoverflow.com/questions/15052576/prevent-android-orientation-change-on-certain-devices
-         */
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (screenSize) {
             case Configuration.SCREENLAYOUT_SIZE_XLARGE:
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 break;
             case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 break;
             case Configuration.SCREENLAYOUT_SIZE_SMALL:
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i("saveInstanceState","SAVE Instance called");
         outState.putInt("setsPlayerOne", setsPlayerOne);
         outState.putInt("setsPlayerTwo", setsPlayerTwo);
         outState.putInt("gamesPlayerOne", gamesPlayerOne);
@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        Log.i("restoreInstanceState", "RESTORE Instance called");
         setsPlayerOne = savedInstanceState.getInt("setsPlayerOne");
         setsPlayerTwo = savedInstanceState.getInt("setsPlayerTwo");
         gamesPlayerOne = savedInstanceState.getInt("gamesPlayerOne");
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display all scores
      */
-    public void displayAll() {
+    private void displayAll() {
         displayGamesPlayerOne(gamesPlayerOne);
         displayGamesPlayerTwo(gamesPlayerTwo);
         displayPointsPlayerOne(pointsPlayerOne);
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Set all variables to zero
      */
-    public void setAllZero() {
+    private void setAllZero() {
         setsPlayerOne = 0;
         setsPlayerTwo = 0;
         gamesPlayerOne = 0;
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Save the state of current variables for use in undo
      */
-    public void undoSave() {
+    private void undoSave() {
         undoSetsPlayerOne = setsPlayerOne;
         undoSetsPlayerTwo = setsPlayerTwo;
         undoGamesPlayerOne = gamesPlayerOne;
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Restore the state of variables on undo button press
      */
-    public void undoRestore() {
+    private void undoRestore() {
         setsPlayerOne = undoSetsPlayerOne;
         setsPlayerTwo = undoSetsPlayerTwo;
         gamesPlayerOne = undoGamesPlayerOne;
@@ -188,11 +189,7 @@ public class MainActivity extends AppCompatActivity {
         undoState = true;
         resetState = false;
 
-        if (tiebreak) {
-            resetDuringTie = true;
-        } else {
-            resetDuringTie = false;
-        }
+        resetDuringTie = tiebreak;
         undoSave();
         setAllZero();
         displayAll();
@@ -237,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display set score for player one
      */
-    public void displaySetPlayerOne(int set) {
+    private void displaySetPlayerOne(int set) {
         TextView setScoreView = findViewById(R.id.player_one_sets);
         setScoreView.setText(String.valueOf(set));
     }
@@ -245,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display set score for player two
      */
-    public void displaySetPlayerTwo(int set) {
+    private void displaySetPlayerTwo(int set) {
         TextView setScoreView = findViewById(R.id.player_two_sets);
         setScoreView.setText(String.valueOf(set));
     }
@@ -253,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display games score for player one
      */
-    public void displayGamesPlayerOne(int games) {
+    private void displayGamesPlayerOne(int games) {
         TextView setScoreView = findViewById(R.id.player_one_games);
         setScoreView.setText(String.valueOf(games));
     }
@@ -261,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display games score for player two
      */
-    public void displayGamesPlayerTwo(int games) {
+    private void displayGamesPlayerTwo(int games) {
         TextView setScoreView = findViewById(R.id.player_two_games);
         setScoreView.setText(String.valueOf(games));
     }
@@ -269,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display points score for player one
      */
-    public void displayPointsPlayerOne(int points) {
+    private void displayPointsPlayerOne(int points) {
         TextView setScoreView = findViewById(R.id.player_one_points);
         setScoreView.setText(String.valueOf(points));
     }
@@ -277,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display points score for player two
      */
-    public void displayPointsPlayerTwo(int points) {
+    private void displayPointsPlayerTwo(int points) {
         TextView setScoreView = findViewById(R.id.player_two_points);
         setScoreView.setText(String.valueOf(points));
     }
@@ -285,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display the String adv for player one after Deuce (can be either Adv or -)
      */
-    public void displayAdvPlayerOne(String adv) {
+    private void displayAdvPlayerOne(String adv) {
         TextView setScoreView = findViewById(R.id.player_one_points);
         setScoreView.setText(adv);
     }
@@ -293,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display the String adv for player two after Deuce (can be either Adv or -)
      */
-    public void displayAdvPlayerTwo(String adv) {
+    private void displayAdvPlayerTwo(String adv) {
         TextView setScoreView = findViewById(R.id.player_two_points);
         setScoreView.setText(adv);
     }
@@ -374,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Modify the Points text view in case of Deuce
      */
-    public void displayPoints(String points) {
+    private void displayPoints(String points) {
         TextView pointsView = findViewById(R.id.points);
         pointsView.setText(points);
 
@@ -393,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
      * Method to add points for player one.
      * Automatically ends games/sets when needed.
      */
-    public void addPointsPlayerOne() {
+    private void addPointsPlayerOne() {
         int check = checkGameOver(pointsPlayerOne, pointsPlayerTwo);
         switch (check) {
             case 1:
@@ -465,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
      * Method to add points for player two.
      * Automatically ends games/sets when needed.
      */
-    public void addPointsPlayerTwo() {
+    private void addPointsPlayerTwo() {
         int checkGame = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
         switch (checkGame) {
             case 1:
@@ -541,7 +538,7 @@ public class MainActivity extends AppCompatActivity {
      * returns 3 if score is 40-40 so it should continue on advantages
      * returns 4 if score before pushing button was Advantage for player B
      */
-    public int checkGameOver(int pointsA, int pointsB) {
+    private int checkGameOver(int pointsA, int pointsB) {
         if (pointsA > 40) {
             if (pointsA > pointsB) {
                 return 1;
@@ -569,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
      * return 2 if set just continues, not yet ending
      * return 3 if tiebreak should start
      */
-    public int checkSetOver(int gamesA, int gamesB) {
+    private int checkSetOver(int gamesA, int gamesB) {
         if (gamesA >= 6 & ((gamesA - gamesB) >= 2)) {
             return 1;
         } else if (gamesA == 6 & gamesB == 6) {
@@ -580,13 +577,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Return true if tie-break is won by player A
-     * Return falso if tie-break continues
+     * Return false if tie-break continues
      */
-    public boolean checkTieOver(int pointsA, int pointsB) {
-        if ((pointsA + 1 >= 7) & ((pointsA + 1 - pointsB) >= 2)) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean checkTieOver(int pointsA, int pointsB) {
+        return (pointsA + 1 >= 7) & ((pointsA + 1 - pointsB) >= 2);
     }
 }
