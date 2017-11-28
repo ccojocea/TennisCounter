@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Cosmin Cojocea All rights reserved
+ * Copyright (c) 2017 Cosmin Cojocea
  *
  * This project was created and submitted by Cosmin Cojocea as part of the Google Challenge Scholarship: Android Basics for Udacity.
  *
