@@ -2,9 +2,9 @@
 
 Goals of this app:
 Keep the score for a tennis match between 2 players by using just one button for each player, automatically updating Points, Games and Sets.
-Change the display when a DEUCE is reached, using Advantage system.
-Change the display when a TIE-BREAK is reached.
-Reset the scores if a RESET button is pressed.
+Change the display when DEUCE is reached, using Advantage system.
+Change the display when TIE-BREAK is reached.
+Reset the scores if the RESET SCORES button is pressed.
 Undo the last action if the UNDO button is pressed. This also works after a reset.
 Keep the same score display in case orientation of the device has changed, with the UNDO/RESET button functionality unchanged.
 
