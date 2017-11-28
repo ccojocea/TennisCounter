@@ -8,7 +8,7 @@ Reset the scores if the RESET SCORES button is pressed.
 Undo the last action if the UNDO button is pressed. This also works after a reset.
 Keep the same score display in case orientation of the device has changed, with the UNDO/RESET button functionality unchanged.
 
-Copyright (c) 2017 Cosmin Cojocea All rights reserved
+Copyright (c) 2017 Cosmin Cojocea
 
 This project was created and submitted by Cosmin Cojocea as part of the Google Challenge Scholarship: Android Basics for Udacity.
 
