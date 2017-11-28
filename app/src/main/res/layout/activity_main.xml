@@ -58,9 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textSize="@dimen/font_size_small"
                 android:textColor="@color/colorTennisBall"
                 android:layout_marginBottom="@dimen/layout_vertical_margin"
+                android:textSize="@dimen/font_size_small"
                 android:shadowColor="@android:color/black"
                 android:shadowDx="-2"
                 android:shadowDy="2"
@@ -258,5 +258,92 @@
         android:onClick="resetScores"
         android:padding="@dimen/padding_button"
         android:enabled="false"/>
+
+    <TableLayout
+        android:id="@+id/scores_table_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/reset_button"
+        android:layout_marginTop="@dimen/layout_vertical_margin"
+        android:layout_marginBottom="@dimen/layout_vertical_margin">
+
+        <TableRow
+            android:id="@+id/player_one_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player_one"
+                android:textColor="@color/colorTennisBall"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:textSize="@dimen/font_size_small"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"/>
+
+            <TextView
+                android:id="@+id/player_one_score_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:text=""
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/stupid_line_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorTennisBall"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/player_two_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player_two"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"/>
+
+            <TextView
+                android:id="@+id/player_two_score_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:text=""
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"/>
+
+        </TableRow>
+
+    </TableLayout>
 
 </RelativeLayout>

@@ -29,6 +29,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean undoState;
     private boolean resetState;
 
+    private int currentSet;
+    private boolean setJustOver;
+
+
+    String scoresP1Line = "3 " + "2 " + "6 "+ "7 " + "4 " + "3 " + "1 ";
+    String scoresP2Line = "6 " + "6 " + "7 "+ "5 " + "6 " + "6 " + "6 ";
+
     /**
      * The one which brings light into darkness!
      * Check screen dimension to determine if orientation change is allowed.
@@ -65,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView scoresP1 = findViewById(R.id.player_one_score_line);
+        TextView scoresP2 = findViewById(R.id.player_two_score_line);
+        scoresP1.setText(scoresP1Line);
+        scoresP2.setText(scoresP2Line);
+        TableRow lineView = findViewById(R.id.stupid_line_view);
+        lineView.invalidate();
 
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (screenSize) {
@@ -107,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("resetDuringTie", resetDuringTie);
         outState.putBoolean("undoState", undoState);
         outState.putBoolean("resetState", resetState);
+        outState.putInt("currentSet", currentSet);
+        outState.putBoolean("setJustOver", setJustOver);
     }
 
     @Override
@@ -130,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         resetDuringTie = savedInstanceState.getBoolean("resetDuringTie");
         undoState = savedInstanceState.getBoolean("undoState");
         resetState = savedInstanceState.getBoolean("resetState");
+        currentSet = savedInstanceState.getInt("currentSet");
+        setJustOver = savedInstanceState.getBoolean("setJustOver");
         if(undoState){
             Button undoButton = findViewById(R.id.undo_button);
             undoButton.setEnabled(true);
@@ -229,6 +248,9 @@ public class MainActivity extends AppCompatActivity {
         undoState = false;
         resetState = true;
 
+        if(setJustOver){
+            currentSet--;
+        }
         undoRestore();
         displayAll();
         if (pointsPlayerOne > 40 | pointsPlayerTwo > 40) {
@@ -337,6 +359,8 @@ public class MainActivity extends AppCompatActivity {
             if (check) {
                 tiebreak = false;
                 setsPlayerOne++;
+                currentSet++;
+                setJustOver = true;
                 gamesPlayerOne = 0;
                 gamesPlayerTwo = 0;
                 pointsPlayerOne = 0;
@@ -374,6 +398,8 @@ public class MainActivity extends AppCompatActivity {
             if (check) {
                 tiebreak = false;
                 setsPlayerTwo++;
+                currentSet++;
+                setJustOver = true;
                 gamesPlayerOne = 0;
                 gamesPlayerTwo = 0;
                 pointsPlayerOne = 0;
@@ -412,12 +438,14 @@ public class MainActivity extends AppCompatActivity {
      * Automatically ends games/sets when needed.
      */
     private void addPointsPlayerOne() {
+        if(setJustOver){
+            setJustOver = false;
+        }
         int check = checkGameOver(pointsPlayerOne, pointsPlayerTwo);
         switch (check) {
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
-                gamesPlayerOne++;
                 displayPoints("Points");
                 displayGamesPlayerOne(gamesPlayerOne);
                 displayPointsPlayerOne(pointsPlayerOne);
@@ -458,6 +486,8 @@ public class MainActivity extends AppCompatActivity {
             //     player 1 wins set.
             case 1:
                 setsPlayerOne++;
+                currentSet++;
+                setJustOver = true;
                 gamesPlayerOne = 0;
                 gamesPlayerTwo = 0;
                 pointsPlayerOne = 0;
@@ -484,6 +514,9 @@ public class MainActivity extends AppCompatActivity {
      * Automatically ends games/sets when needed.
      */
     private void addPointsPlayerTwo() {
+        if(setJustOver){
+            setJustOver = false;
+        }
         int checkGame = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
         switch (checkGame) {
             case 1:
@@ -530,6 +563,8 @@ public class MainActivity extends AppCompatActivity {
             //     player 2 wins set.
             case 1:
                 setsPlayerTwo++;
+                currentSet++;
+                setJustOver = true;
                 gamesPlayerOne = 0;
                 gamesPlayerTwo = 0;
                 pointsPlayerOne = 0;

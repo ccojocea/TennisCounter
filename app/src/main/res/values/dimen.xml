@@ -24,15 +24,15 @@
     <dimen name="layout_vertical_margin">16dp</dimen>
     <dimen name="layout_vertical_margin_big">32dp</dimen>
     <dimen name="layout_margin">16dp</dimen>
-
+    <dimen name="layout_margin_small">4dp</dimen>
     <dimen name="padding_button">16dp</dimen>
-
     <dimen name="font_size_large">32sp</dimen>
     <dimen name="font_size_medium">24sp</dimen>
     <dimen name="font_size_small">20sp</dimen>
     <dimen name="font_size_xs">16sp</dimen>
-
     <dimen name="points_horizontal">130dp</dimen>
-
     <dimen name="img_button_size">65dp</dimen>
+
+    <dimen name="player_text_size">120dp</dimen>
+    <dimen name="player_score_size">10dp</dimen>
 </resources>
