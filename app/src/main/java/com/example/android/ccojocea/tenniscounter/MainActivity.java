@@ -35,9 +35,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -62,16 +59,18 @@ public class MainActivity extends AppCompatActivity {
     private boolean resetDuringTie;
     private boolean undoState;
     private boolean resetState;
-
     private int currentSet;
     private boolean setJustOver;
 
-
-    ScoreTrack scoreTrk = new ScoreTrack();
-    String scoresP1Line;
-    String scoresP2Line;
-//    List<Integer> scoresP1 = new ArrayList<>();
-//    List<Integer> scoresP2 = new ArrayList<>();
+    //these variables are not saved on orientation change
+    private ScoreTrack scoreTrk = new ScoreTrack();
+    private ScoreTrack undoScoreTrk = new ScoreTrack();
+    private String scoresP1Line;
+    private String undoScoresP1Line;
+    private String scoresP2Line;
+    private String undoScoresP2Line;
+    private boolean gameOver;
+    private boolean gameOverForUndo;
 
     /**
      * The one which brings light into darkness!
@@ -199,20 +198,7 @@ public class MainActivity extends AppCompatActivity {
         scoresP1Line = ScoreTrack.toMyString(scoreTrk.scoresP1);
         scoresP2Line = ScoreTrack.toMyString(scoreTrk.scoresP2);
 
-        TextView scoresP1 = findViewById(R.id.player_one_score_line);
-        TextView scoresP2 = findViewById(R.id.player_two_score_line);
-        scoresP1.setText(scoresP1Line);
-        scoresP2.setText(scoresP2Line);
-        TableLayout tblScores = findViewById(R.id.scores_table_layout);
-        tblScores.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Method to be called by the undo methods
-     * Restore the score display at the bottom to previous score.
-     */
-    public void undoSaveGames(){
-
+        displayScoreTable(scoresP1Line, scoresP2Line, true);
     }
 
     /**
@@ -237,7 +223,10 @@ public class MainActivity extends AppCompatActivity {
         gamesPlayerTwo = 0;
         pointsPlayerOne = 0;
         pointsPlayerTwo = 0;
+        scoresP1Line = "";
+        scoresP2Line = "";
         tiebreak = false;
+        scoreTrk = new ScoreTrack();
     }
 
     /**
@@ -251,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
         undoPointsPlayerOne = pointsPlayerOne;
         undoPointsPlayerTwo = pointsPlayerTwo;
         undoTiebreak = tiebreak;
+
+        undoScoresP1Line = scoresP1Line;
+        undoScoresP2Line = scoresP2Line;
+        undoScoreTrk = ScoreTrack.copy(scoreTrk);
     }
 
     /**
@@ -264,6 +257,43 @@ public class MainActivity extends AppCompatActivity {
         pointsPlayerOne = undoPointsPlayerOne;
         pointsPlayerTwo = undoPointsPlayerTwo;
         tiebreak = undoTiebreak;
+
+        scoresP1Line = undoScoresP1Line;
+        scoresP2Line = undoScoresP2Line;
+        scoreTrk = ScoreTrack.copy(undoScoreTrk);
+
+        if(gameOverForUndo){
+            ImageButton buttonA = findViewById(R.id.add_points_player_one);
+            ImageButton buttonB = findViewById(R.id.add_points_player_two);
+            buttonA.setEnabled(false);
+            buttonB.setEnabled(false);
+            TextView win = findViewById(R.id.win_message);
+            if(setsPlayerOne >=4 | setsPlayerTwo >= 4){
+                if(setsPlayerOne>setsPlayerTwo){
+                    win.setText("Player One Wins!");
+                }else{
+                    win.setText("Player Two Wins!");
+                }
+            }
+            displayScoreTable(scoresP1Line, scoresP2Line, true);
+            gameOver = true;
+            gameOverForUndo = false;
+        }else if(gameOver){
+            ImageButton buttonA = findViewById(R.id.add_points_player_one);
+            ImageButton buttonB = findViewById(R.id.add_points_player_two);
+            buttonA.setEnabled(true);
+            buttonB.setEnabled(true);
+            TextView win = findViewById(R.id.win_message);
+            win.setText("");
+            displayScoreTable(scoresP1Line, scoresP2Line, true);
+            gameOver = false;
+        }
+
+        if (!scoreTrk.scoresP1.isEmpty()){
+            displayScoreTable(scoresP1Line, scoresP2Line, true);
+        } else {
+            displayScoreTable(scoresP1Line, scoresP2Line, false);
+        }
     }
 
     /**
@@ -277,12 +307,24 @@ public class MainActivity extends AppCompatActivity {
         resetButton.setEnabled(false);
         undoState = true;
         resetState = false;
-
+        setJustOver = false;
         resetDuringTie = tiebreak;
         undoSave();
         setAllZero();
         displayAll();
         displayPoints("Points");
+
+        if(gameOver){
+            gameOver = false;
+            gameOverForUndo = true;
+        }
+        ImageButton buttonA = findViewById(R.id.add_points_player_one);
+        ImageButton buttonB = findViewById(R.id.add_points_player_two);
+        buttonA.setEnabled(true);
+        buttonB.setEnabled(true);
+        TextView win = findViewById(R.id.win_message);
+        win.setText("");
+        displayScoreTable("","", false);
     }
 
     /**
@@ -400,6 +442,7 @@ public class MainActivity extends AppCompatActivity {
         resetButton.setEnabled(true);
         undoState = true;
         resetState = true;
+        gameOverForUndo = false;
 
         undoSave();
 
@@ -443,6 +486,7 @@ public class MainActivity extends AppCompatActivity {
         resetButton.setEnabled(true);
         undoState = true;
         resetState = true;
+        gameOverForUndo = false;
 
         undoSave();
 
@@ -487,6 +531,22 @@ public class MainActivity extends AppCompatActivity {
             pointsView.setHeight(height);
         } else {
             pointsView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_large));
+        }
+    }
+
+    /**
+     * Display method concerning Scores Table
+     */
+    private void displayScoreTable(String line1, String line2, boolean display){
+        TextView scoresP1 = findViewById(R.id.player_one_score_line);
+        TextView scoresP2 = findViewById(R.id.player_two_score_line);
+        scoresP1.setText(line1);
+        scoresP2.setText(line2);
+        TableLayout tblScores = findViewById(R.id.scores_table_layout);
+        if (display){
+            tblScores.setVisibility(View.VISIBLE);
+        } else {
+            tblScores.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -705,8 +765,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to check if a player reached 4 sets, in which case the game ends (4 out of 7)
-     * @param set
-     * @return
      */
     private void checkGameOver(int set, String player){
         if (set == 4){
@@ -716,6 +774,7 @@ public class MainActivity extends AppCompatActivity {
             buttonB.setEnabled(false);
             TextView win = findViewById(R.id.win_message);
             win.setText(player + " wins!");
+            gameOver = true;
         }
     }
 }
