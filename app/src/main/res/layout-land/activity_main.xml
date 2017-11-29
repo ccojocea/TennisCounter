@@ -21,6 +21,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/courtnetdarkland"
@@ -29,8 +30,8 @@
 
     <RelativeLayout
         android:id="@+id/rel_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/lin_layout_left"
@@ -104,7 +105,7 @@
             android:id="@+id/center_lin_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/lin_layout_left"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -179,7 +180,7 @@
             android:id="@+id/lin_layout_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/center_lin_layout"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -251,10 +252,106 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/resetback"
         android:enabled="false"
         android:onClick="resetScores"
         android:padding="@dimen/padding_button"
-        android:text="@string/reset_scores" />
+        android:text="@string/reset_scores"
+        android:textColor="@color/resetcolor" />
+
+    <TextView
+        android:id="@+id/win_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/rel_layout"
+        android:layout_marginLeft="@dimen/layout_margin"
+        android:gravity="right"
+        android:maxLines="2"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="2"
+        android:shadowRadius="0.5"
+        android:text=""
+        android:textAllCaps="true"
+        android:textColor="@color/colorTennisBall"
+        android:textSize="@dimen/font_size_medium" />
+
+    <TableLayout
+        android:id="@+id/scores_table_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/reset_button"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/layout_vertical_margin"
+        android:background="@drawable/roundedrectangle"
+        android:visibility="invisible">
+
+        <TableRow
+            android:id="@+id/player_one_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:shadowColor="@color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"
+                android:text="@string/player_one"
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small" />
+
+            <TextView
+                android:id="@+id/player_one_score_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:shadowColor="@color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"
+                android:text=""
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/player_two_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:shadowColor="@color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"
+                android:text="@string/player_two"
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small" />
+
+            <TextView
+                android:id="@+id/player_two_score_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/layout_margin_small"
+                android:shadowColor="@color/black"
+                android:shadowDx="-2"
+                android:shadowDy="2"
+                android:shadowRadius="0.5"
+                android:text=""
+                android:textColor="@color/colorTennisBall"
+                android:textSize="@dimen/font_size_small" />
+
+        </TableRow>
+
+    </TableLayout>
 
 </RelativeLayout>
