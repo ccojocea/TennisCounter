@@ -27,4 +27,5 @@
     <color name="colorTennisBall">#C6ED2C</color>
     <color name="colortextlight">#C6ED2C</color>
     <color name="deeporange">#F4511E</color>
+    <color name="black">#000000</color>
 </resources>

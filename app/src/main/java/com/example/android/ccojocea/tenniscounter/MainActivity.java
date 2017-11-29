@@ -30,10 +30,13 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,8 +67,11 @@ public class MainActivity extends AppCompatActivity {
     private boolean setJustOver;
 
 
-    String scoresP1Line = "3 " + "2 " + "6 "+ "7 " + "4 " + "3 " + "1 ";
-    String scoresP2Line = "6 " + "6 " + "7 "+ "5 " + "6 " + "6 " + "6 ";
+    ScoreTrack scoreTrk = new ScoreTrack();
+    String scoresP1Line;
+    String scoresP2Line;
+//    List<Integer> scoresP1 = new ArrayList<>();
+//    List<Integer> scoresP2 = new ArrayList<>();
 
     /**
      * The one which brings light into darkness!
@@ -78,11 +84,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (getResources().getConfiguration().orientation == 1){
-            TextView scoresP1 = findViewById(R.id.player_one_score_line);
-            TextView scoresP2 = findViewById(R.id.player_two_score_line);
-            scoresP1.setText(scoresP1Line);
-            scoresP2.setText(scoresP2Line);
-
             TableLayout scoresTbl = findViewById(R.id.scores_table_layout);
 
             TableRow tableRow = new TableRow(this);
@@ -102,19 +103,6 @@ public class MainActivity extends AppCompatActivity {
             lineView2.setBackgroundColor(Color.parseColor("#C6ED2C"));
             tableRow.addView(lineView2);
         }
-
-//        TextView tv = new TextView(this);
-//        tv.setText("testtesttest");
-//        tv.setBackgroundColor(Color.parseColor("#C6ED2C"));
-//        tableRow.addView(tv);
-
-//        TableRow tblView = findViewById(R.id.stupid_line_row);
-//        tblView.requestLayout();
-//        View lineView = findViewById(R.id.stupid_line_view);
-//        lineView.requestLayout();
-//        RelativeLayout base = findViewById(R.id.base_layout);
-//        base.requestLayout();
-
 
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (screenSize) {
@@ -199,6 +187,32 @@ public class MainActivity extends AppCompatActivity {
             resetButton.setEnabled(false);
         }
         displayAll();
+    }
+
+    /**
+     *  Method saves end of set games situation for both players to be displayed at the bottom of the screen
+     */
+    public void saveGames(int currentSet, int gamesPlayerOne, int gamesPlayerTwo){
+        scoreTrk.scoresP1.add(gamesPlayerOne);
+        scoreTrk.scoresP2.add(gamesPlayerTwo);
+        scoreTrk.setCurrentSet(currentSet);
+        scoresP1Line = ScoreTrack.toMyString(scoreTrk.scoresP1);
+        scoresP2Line = ScoreTrack.toMyString(scoreTrk.scoresP2);
+
+        TextView scoresP1 = findViewById(R.id.player_one_score_line);
+        TextView scoresP2 = findViewById(R.id.player_two_score_line);
+        scoresP1.setText(scoresP1Line);
+        scoresP2.setText(scoresP2Line);
+        TableLayout tblScores = findViewById(R.id.scores_table_layout);
+        tblScores.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Method to be called by the undo methods
+     * Restore the score display at the bottom to previous score.
+     */
+    public void undoSaveGames(){
+
     }
 
     /**
@@ -392,7 +406,10 @@ public class MainActivity extends AppCompatActivity {
         if (tiebreak) {
             boolean check = checkTieOver(pointsPlayerOne, pointsPlayerTwo);
             if (check) {
+                //Player one wins set after tiebreak
                 tiebreak = false;
+                gamesPlayerOne++;
+                saveGames(currentSet, gamesPlayerOne, gamesPlayerTwo);
                 setsPlayerOne++;
                 currentSet++;
                 setJustOver = true;
@@ -402,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerTwo = 0;
                 displayAll();
                 displayPoints("Points");
+                checkGameOver(setsPlayerOne, "Player One");
             } else {
                 pointsPlayerOne++;
                 displayPointsPlayerOne(pointsPlayerOne);
@@ -431,7 +449,10 @@ public class MainActivity extends AppCompatActivity {
         if (tiebreak) {
             boolean check = checkTieOver(pointsPlayerTwo, pointsPlayerOne);
             if (check) {
+                //Player Two wins set after tiebreak
                 tiebreak = false;
+                gamesPlayerTwo++;
+                saveGames(currentSet, gamesPlayerOne, gamesPlayerTwo);
                 setsPlayerTwo++;
                 currentSet++;
                 setJustOver = true;
@@ -441,6 +462,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerTwo = 0;
                 displayAll();
                 displayPoints("Points");
+                checkGameOver(setsPlayerTwo, "Player Two");
             } else {
                 pointsPlayerTwo++;
                 displayPointsPlayerTwo(pointsPlayerTwo);
@@ -478,6 +500,7 @@ public class MainActivity extends AppCompatActivity {
         }
         int check = checkGameOver(pointsPlayerOne, pointsPlayerTwo);
         switch (check) {
+            //playerOne wins a game
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
@@ -521,6 +544,7 @@ public class MainActivity extends AppCompatActivity {
         switch (checkSet) {
             //     player 1 wins set.
             case 1:
+                saveGames(currentSet, gamesPlayerOne, gamesPlayerTwo);
                 setsPlayerOne++;
                 currentSet++;
                 setJustOver = true;
@@ -529,6 +553,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
                 displayAll();
+                checkGameOver(setsPlayerOne, "Player One");
                 break;
             //set just continues, not yet ending
             case 2:
@@ -555,6 +580,7 @@ public class MainActivity extends AppCompatActivity {
         }
         int checkGame = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
         switch (checkGame) {
+            //playerTwo wins a game
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
@@ -598,6 +624,7 @@ public class MainActivity extends AppCompatActivity {
         switch (checkSet) {
             //     player 2 wins set.
             case 1:
+                saveGames(currentSet, gamesPlayerOne, gamesPlayerTwo);
                 setsPlayerTwo++;
                 currentSet++;
                 setJustOver = true;
@@ -606,6 +633,7 @@ public class MainActivity extends AppCompatActivity {
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
                 displayAll();
+                checkGameOver(setsPlayerTwo, "Player Two");
                 break;
             //set just continues, not yet ending
             case 2:
@@ -673,5 +701,21 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean checkTieOver(int pointsA, int pointsB) {
         return (pointsA + 1 >= 7) & ((pointsA + 1 - pointsB) >= 2);
+    }
+
+    /**
+     * Method to check if a player reached 4 sets, in which case the game ends (4 out of 7)
+     * @param set
+     * @return
+     */
+    private void checkGameOver(int set, String player){
+        if (set == 4){
+            ImageButton buttonA = findViewById(R.id.add_points_player_one);
+            ImageButton buttonB = findViewById(R.id.add_points_player_two);
+            buttonA.setEnabled(false);
+            buttonB.setEnabled(false);
+            TextView win = findViewById(R.id.win_message);
+            win.setText(player + " wins!");
+        }
     }
 }

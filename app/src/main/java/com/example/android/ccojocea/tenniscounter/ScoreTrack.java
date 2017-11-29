@@ -21,79 +21,90 @@
 
 package com.example.android.ccojocea.tenniscounter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ccojo on 11/28/2017.
  */
 
-public class ScoreTrack {
-    public String[] scores = {"7", "6", "3", "2", "1", "5", "7", "6", "3", "2", "1", "5", "3", "2"};
+public class ScoreTrack{
+    List<Integer> scoresP1 = new ArrayList<>();
+    List<Integer> scoresP2 = new ArrayList<>();
+    int currentSet;
 
-    public int[] playerOneSets = {0, 0, 0, 0, 0, 0, 0};
-    public int[] playerTwoSets = {0, 0, 0, 0, 0, 0, 0};
-
-    public int setsPlayed;
-
-    public String[] playerOneLine;
-    public String[] playerTwoLine;
-
-    public int[] set1 = {0, 0};
-    public int[] set2 = {0, 0};
-    public int[] set3 = {0, 0};
-    public int[] set4 = {0, 0};
-    public int[] set5 = {0, 0};
-    public int[] set6 = {0, 0};
-    public int[] set7 = {0, 0};
-
-    public void setNumberOfSets(int setNumber){
-        this.setsPlayed = setNumber;
-    }
-
-    public void setScoreForASet (int game1, int game2, int setNumber){
-        switch (setNumber){
-            case 1:
-                this.set1[0] = game1;
-                this.set1[1] = game2;
-                this.playerOneSets[0] = game1;
-                this.playerTwoSets[0] = game2;
-                break;
-            case 2:
-                this.set2[0] = game1;
-                this.set2[1] = game2;
-                this.playerOneSets[1] = game1;
-                this.playerTwoSets[1] = game2;
-                break;
-            case 3:
-                this.set3[0] = game1;
-                this.set3[1] = game2;
-                this.playerOneSets[2] = game1;
-                this.playerTwoSets[2] = game2;
-                break;
-            case 4:
-                this.set4[0] = game1;
-                this.set4[1] = game2;
-                this.playerOneSets[3] = game1;
-                this.playerTwoSets[3] = game2;
-                break;
-            case 5:
-                this.set5[0] = game1;
-                this.set5[1] = game2;
-                this.playerOneSets[4] = game1;
-                this.playerTwoSets[4] = game2;
-                break;
-            case 6:
-                this.set6[0] = game1;
-                this.set6[1] = game2;
-                this.playerOneSets[5] = game1;
-                this.playerTwoSets[5] = game2;
-                break;
-            case 7:
-                this.set7[0] = game1;
-                this.set7[1] = game2;
-                this.playerOneSets[6] = game1;
-                this.playerTwoSets[6] = game2;
-                break;
-            default:
-                throw new IndexOutOfBoundsException("Maximum number of sets is 7, please reset scores!");
+    public static String toMyString(List<?> list){
+        String result = "";
+        for (int i = 0; i < list.size(); i++){
+            result = result + "  " + list.get(i);
         }
+        return result;
     }
+
+    public void setCurrentSet(int i){
+        currentSet = i;
+    }
+
+
+
+//    public int[] set1 = {0, 0};
+//    public int[] set2 = {0, 0};
+//    public int[] set3 = {0, 0};
+//    public int[] set4 = {0, 0};
+//    public int[] set5 = {0, 0};
+//    public int[] set6 = {0, 0};
+//    public int[] set7 = {0, 0};
+//
+//    public void setNumberOfSets(int setNumber){
+//        this.setsPlayed = setNumber;
+//    }
+//
+//    public void setScoreForASet (int game1, int game2, int setNumber){
+//        switch (setNumber){
+//            case 1:
+//                this.set1[0] = game1;
+//                this.set1[1] = game2;
+//                this.playerOneSets[0] = game1;
+//                this.playerTwoSets[0] = game2;
+//                break;
+//            case 2:
+//                this.set2[0] = game1;
+//                this.set2[1] = game2;
+//                this.playerOneSets[1] = game1;
+//                this.playerTwoSets[1] = game2;
+//                break;
+//            case 3:
+//                this.set3[0] = game1;
+//                this.set3[1] = game2;
+//                this.playerOneSets[2] = game1;
+//                this.playerTwoSets[2] = game2;
+//                break;
+//            case 4:
+//                this.set4[0] = game1;
+//                this.set4[1] = game2;
+//                this.playerOneSets[3] = game1;
+//                this.playerTwoSets[3] = game2;
+//                break;
+//            case 5:
+//                this.set5[0] = game1;
+//                this.set5[1] = game2;
+//                this.playerOneSets[4] = game1;
+//                this.playerTwoSets[4] = game2;
+//                break;
+//            case 6:
+//                this.set6[0] = game1;
+//                this.set6[1] = game2;
+//                this.playerOneSets[5] = game1;
+//                this.playerTwoSets[5] = game2;
+//                break;
+//            case 7:
+//                this.set7[0] = game1;
+//                this.set7[1] = game2;
+//                this.playerOneSets[6] = game1;
+//                this.playerTwoSets[6] = game2;
+//                break;
+//            default:
+//                throw new IndexOutOfBoundsException("Maximum number of sets is 7, please reset scores!");
+//        }
+//    }
 }
