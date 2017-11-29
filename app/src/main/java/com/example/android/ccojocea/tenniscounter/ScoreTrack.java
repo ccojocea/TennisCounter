@@ -29,24 +29,24 @@ import java.util.List;
  * Created by ccojo on 11/28/2017.
  */
 
-public class ScoreTrack implements Serializable{
+public class ScoreTrack implements Serializable {
     List<Integer> scoresP1 = new ArrayList<>();
     List<Integer> scoresP2 = new ArrayList<>();
     int currentSet;
 
-    public static String toMyString(List<?> list){
+    public static String toMyString(List<?> list) {
         String result = "";
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             result = result + "  " + list.get(i);
         }
         return result;
     }
 
-    public void setCurrentSet(int i){
+    public void setCurrentSet(int i) {
         currentSet = i;
     }
 
-    public static ScoreTrack copy(ScoreTrack st){
+    public static ScoreTrack copy(ScoreTrack st) {
         ScoreTrack newST = new ScoreTrack();
         newST.scoresP1 = new ArrayList<>(st.scoresP1);
         newST.scoresP2 = new ArrayList<>(st.scoresP2);

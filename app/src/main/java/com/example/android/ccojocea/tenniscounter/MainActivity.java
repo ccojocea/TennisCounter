@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getResources().getConfiguration().orientation == 1){
+        if (getResources().getConfiguration().orientation == 1) {
             TableLayout scoresTbl = findViewById(R.id.scores_table_layout);
 
             TableRow tableRow = new TableRow(this);
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i("saveInstanceState","SAVE Instance called");
+        Log.i("saveInstanceState", "SAVE Instance called");
         outState.putInt("setsPlayerOne", setsPlayerOne);
         outState.putInt("setsPlayerTwo", setsPlayerTwo);
         outState.putInt("gamesPlayerOne", gamesPlayerOne);
@@ -171,14 +171,14 @@ public class MainActivity extends AppCompatActivity {
         resetState = savedInstanceState.getBoolean("resetState");
         currentSet = savedInstanceState.getInt("currentSet");
         setJustOver = savedInstanceState.getBoolean("setJustOver");
-        if(undoState){
+        if (undoState) {
             Button undoButton = findViewById(R.id.undo_button);
             undoButton.setEnabled(true);
         } else {
             Button undoButton = findViewById(R.id.undo_button);
             undoButton.setEnabled(false);
         }
-        if(resetState){
+        if (resetState) {
             Button resetButton = findViewById(R.id.reset_button);
             resetButton.setEnabled(true);
         } else {
@@ -189,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  Method saves end of set games situation for both players to be displayed at the bottom of the screen
+     * Method saves end of set games situation for both players to be displayed at the bottom of the screen
      */
-    public void saveGames(int currentSet, int gamesPlayerOne, int gamesPlayerTwo){
+    public void saveGames(int currentSet, int gamesPlayerOne, int gamesPlayerTwo) {
         scoreTrk.scoresP1.add(gamesPlayerOne);
         scoreTrk.scoresP2.add(gamesPlayerTwo);
         scoreTrk.setCurrentSet(currentSet);
@@ -262,23 +262,23 @@ public class MainActivity extends AppCompatActivity {
         scoresP2Line = undoScoresP2Line;
         scoreTrk = ScoreTrack.copy(undoScoreTrk);
 
-        if(gameOverForUndo){
+        if (gameOverForUndo) {
             ImageButton buttonA = findViewById(R.id.add_points_player_one);
             ImageButton buttonB = findViewById(R.id.add_points_player_two);
             buttonA.setEnabled(false);
             buttonB.setEnabled(false);
             TextView win = findViewById(R.id.win_message);
-            if(setsPlayerOne >=4 | setsPlayerTwo >= 4){
-                if(setsPlayerOne>setsPlayerTwo){
+            if (setsPlayerOne >= 4 | setsPlayerTwo >= 4) {
+                if (setsPlayerOne > setsPlayerTwo) {
                     win.setText("Player One Wins!");
-                }else{
+                } else {
                     win.setText("Player Two Wins!");
                 }
             }
             displayScoreTable(scoresP1Line, scoresP2Line, true);
             gameOver = true;
             gameOverForUndo = false;
-        }else if(gameOver){
+        } else if (gameOver) {
             ImageButton buttonA = findViewById(R.id.add_points_player_one);
             ImageButton buttonB = findViewById(R.id.add_points_player_two);
             buttonA.setEnabled(true);
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
             gameOver = false;
         }
 
-        if (!scoreTrk.scoresP1.isEmpty()){
+        if (!scoreTrk.scoresP1.isEmpty()) {
             displayScoreTable(scoresP1Line, scoresP2Line, true);
         } else {
             displayScoreTable(scoresP1Line, scoresP2Line, false);
@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
         displayAll();
         displayPoints("Points");
 
-        if(gameOver){
+        if (gameOver) {
             gameOver = false;
             gameOverForUndo = true;
         }
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
         buttonB.setEnabled(true);
         TextView win = findViewById(R.id.win_message);
         win.setText("");
-        displayScoreTable("","", false);
+        displayScoreTable("", "", false);
     }
 
     /**
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         undoState = false;
         resetState = true;
 
-        if(setJustOver){
+        if (setJustOver) {
             currentSet--;
         }
         undoRestore();
@@ -537,13 +537,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display method concerning Scores Table
      */
-    private void displayScoreTable(String line1, String line2, boolean display){
+    private void displayScoreTable(String line1, String line2, boolean display) {
         TextView scoresP1 = findViewById(R.id.player_one_score_line);
         TextView scoresP2 = findViewById(R.id.player_two_score_line);
         scoresP1.setText(line1);
         scoresP2.setText(line2);
         TableLayout tblScores = findViewById(R.id.scores_table_layout);
-        if (display){
+        if (display) {
             tblScores.setVisibility(View.VISIBLE);
         } else {
             tblScores.setVisibility(View.INVISIBLE);
@@ -555,7 +555,7 @@ public class MainActivity extends AppCompatActivity {
      * Automatically ends games/sets when needed.
      */
     private void addPointsPlayerOne() {
-        if(setJustOver){
+        if (setJustOver) {
             setJustOver = false;
         }
         int check = checkGameOver(pointsPlayerOne, pointsPlayerTwo);
@@ -635,7 +635,7 @@ public class MainActivity extends AppCompatActivity {
      * Automatically ends games/sets when needed.
      */
     private void addPointsPlayerTwo() {
-        if(setJustOver){
+        if (setJustOver) {
             setJustOver = false;
         }
         int checkGame = checkGameOver(pointsPlayerTwo, pointsPlayerOne);
@@ -766,8 +766,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to check if a player reached 4 sets, in which case the game ends (4 out of 7)
      */
-    private void checkGameOver(int set, String player){
-        if (set == 4){
+    private void checkGameOver(int set, String player) {
+        if (set == 4) {
             ImageButton buttonA = findViewById(R.id.add_points_player_one);
             ImageButton buttonB = findViewById(R.id.add_points_player_two);
             buttonA.setEnabled(false);
