@@ -22,6 +22,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/layout_margin"
@@ -257,7 +258,9 @@
         android:text="@string/reset_scores"
         android:onClick="resetScores"
         android:padding="@dimen/padding_button"
-        android:enabled="false"/>
+        android:enabled="false"
+        android:textColor="@color/resetcolor"
+        android:background="@drawable/resetback"/>
 
     <TableLayout
         android:id="@+id/scores_table_layout"
@@ -266,7 +269,8 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@id/reset_button"
         android:layout_marginTop="@dimen/layout_vertical_margin"
-        android:layout_marginBottom="@dimen/layout_vertical_margin">
+        android:layout_marginBottom="@dimen/layout_vertical_margin"
+        android:background="@drawable/roundedrectangle">
 
         <TableRow
             android:id="@+id/player_one_row"
@@ -300,17 +304,18 @@
 
         </TableRow>
 
-        <TableRow
-            android:id="@+id/stupid_line_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<TableRow-->
+            <!--android:id="@+id/stupid_line_row"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorTennisBall"/>
+            <!--<View-->
+                <!--android:id="@+id/stupid_line_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:background="@color/colorTennisBall"/>-->
 
-        </TableRow>
+        <!--</TableRow>-->
 
         <TableRow
             android:id="@+id/player_two_row"

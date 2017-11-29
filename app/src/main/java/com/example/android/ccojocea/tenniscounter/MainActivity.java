@@ -23,12 +23,15 @@ package com.example.android.ccojocea.tenniscounter;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -74,12 +77,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView scoresP1 = findViewById(R.id.player_one_score_line);
-        TextView scoresP2 = findViewById(R.id.player_two_score_line);
-        scoresP1.setText(scoresP1Line);
-        scoresP2.setText(scoresP2Line);
-        TableRow lineView = findViewById(R.id.stupid_line_view);
-        lineView.invalidate();
+        if (getResources().getConfiguration().orientation == 1){
+            TextView scoresP1 = findViewById(R.id.player_one_score_line);
+            TextView scoresP2 = findViewById(R.id.player_two_score_line);
+            scoresP1.setText(scoresP1Line);
+            scoresP2.setText(scoresP2Line);
+
+            TableLayout scoresTbl = findViewById(R.id.scores_table_layout);
+
+            TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT, 1));
+            scoresTbl.addView(tableRow, 1);
+
+            View lineView = new View(this);
+            lineView.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, 1));
+            lineView.setBackgroundColor(Color.parseColor("#C6ED2C"));
+            tableRow.addView(lineView);
+
+            View lineView2 = new View(this);
+            lineView2.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, 1));
+            lineView2.setBackgroundColor(Color.parseColor("#C6ED2C"));
+            tableRow.addView(lineView2);
+        }
+
+//        TextView tv = new TextView(this);
+//        tv.setText("testtesttest");
+//        tv.setBackgroundColor(Color.parseColor("#C6ED2C"));
+//        tableRow.addView(tv);
+
+//        TableRow tblView = findViewById(R.id.stupid_line_row);
+//        tblView.requestLayout();
+//        View lineView = findViewById(R.id.stupid_line_view);
+//        lineView.requestLayout();
+//        RelativeLayout base = findViewById(R.id.base_layout);
+//        base.requestLayout();
+
 
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (screenSize) {
@@ -446,6 +481,7 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 pointsPlayerOne = 0;
                 pointsPlayerTwo = 0;
+                gamesPlayerOne++;
                 displayPoints("Points");
                 displayGamesPlayerOne(gamesPlayerOne);
                 displayPointsPlayerOne(pointsPlayerOne);

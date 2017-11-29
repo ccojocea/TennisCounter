@@ -20,11 +20,9 @@
   ~
   -->
 
-<resources>
-    <color name="colorPrimary">#102027</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#C6ED2C</color>
-    <color name="colorTennisBall">#C6ED2C</color>
-    <color name="colortextlight">#C6ED2C</color>
-    <color name="deeporange">#F4511E</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- disabled state -->
+    <item android:state_enabled="false" android:color="#37474F" />
+    <item android:state_pressed="true" android:color="@color/colorPrimaryDark"/>
+    <item android:color="@color/colorTennisBall"/>
+</selector>

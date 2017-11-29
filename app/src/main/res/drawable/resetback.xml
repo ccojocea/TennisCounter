@@ -20,11 +20,15 @@
   ~
   -->
 
-<resources>
-    <color name="colorPrimary">#102027</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#C6ED2C</color>
-    <color name="colorTennisBall">#C6ED2C</color>
-    <color name="colortextlight">#C6ED2C</color>
-    <color name="deeporange">#F4511E</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true"
+        android:drawable="@drawable/resetpushed"/> <!-- pressed state -->
+    <item android:state_focused="true"
+        android:drawable="@drawable/resetpushed"/> <!-- focused state -->
+    <item android:state_hovered="true"
+        android:drawable="@drawable/resetpushed" /> <!-- hovered -->
+    <item android:state_enabled="false"
+        android:drawable="@drawable/resetdisabled" /> <!-- disabled -->
+    <item android:drawable="@drawable/resetnormal"/> <!-- default state -->
+
+</selector>
