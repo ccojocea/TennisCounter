@@ -26,7 +26,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +36,6 @@ import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
-
     /**
      * Variables keeping score for both players: Points in a game, Games in a set and Sets*
      * Undo variables save scores between button presses
@@ -57,13 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private int undoPointsPlayerTwo;
     private boolean tiebreak;
     private boolean undoTiebreak;
-    //private boolean resetDuringTie;
     private boolean undoState;
     private boolean resetState;
     private int currentSet;
     private boolean setJustOver;
-
-    //these variables are not saved on orientation change
     private ScoreTrack scoreTrk = new ScoreTrack();
     private ScoreTrack undoScoreTrk = new ScoreTrack();
     private String scoresP1Line;
@@ -104,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             tableRow.addView(lineView2);
         }
 
+        //Not allowing orientation change on small devices
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (screenSize) {
             case Configuration.SCREENLAYOUT_SIZE_XLARGE:
@@ -127,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        Log.i("saveInstanceState", "SAVE Instance called");
         outState.putInt("setsPlayerOne", setsPlayerOne);
         outState.putInt("setsPlayerTwo", setsPlayerTwo);
         outState.putInt("gamesPlayerOne", gamesPlayerOne);
@@ -159,9 +154,20 @@ public class MainActivity extends AppCompatActivity {
         outState.putIntegerArrayList("undoScoreTrk.scoresP1", undoScoreTrk.scoresP1);
         outState.putIntegerArrayList("undoScoreTrk.scoresP2", undoScoreTrk.scoresP2);
 
+        TextView tvPoints = findViewById(R.id.points);
+        String tvPointsText = tvPoints.getText().toString();
+        outState.putString("tvPointsText", tvPointsText);
+
+        TextView pointsP1 = findViewById(R.id.player_one_points);
+        TextView pointsP2 = findViewById(R.id.player_two_points);
+        String pointsP1text = pointsP1.getText().toString();
+        String pointsP2text = pointsP2.getText().toString();
+        outState.putString("pointsP1text", pointsP1text);
+        outState.putString("pointsP2text", pointsP2text);
+
         ImageButton buttonA = findViewById(R.id.add_points_player_one);
         boolean buttonsDisabled = false;
-        if(buttonA.isEnabled()){
+        if (buttonA.isEnabled()) {
             outState.putBoolean("buttonsDisabled", buttonsDisabled);
         } else {
             buttonsDisabled = true;
@@ -170,52 +176,21 @@ public class MainActivity extends AppCompatActivity {
 
         TableLayout tblScores = findViewById(R.id.scores_table_layout);
         boolean tblScoresVisible = false;
-        if(tblScores.getVisibility() == View.VISIBLE){
+        if (tblScores.getVisibility() == View.VISIBLE) {
             tblScoresVisible = true;
             outState.putBoolean("tblScoresVisible", tblScoresVisible);
-        }else{
+        } else {
             outState.putBoolean("tblScoresVisible", tblScoresVisible);
         }
 
         TextView tvWin = findViewById(R.id.win_message);
         String winText = tvWin.getText().toString();
         outState.putString("winText", winText);
-
-//        int[] arrayScores1 = new int[scoreTrk.scoresP1.size()];
-//        int[] arrayScores2 = new int[scoreTrk.scoresP2.size()];
-//        for(int i = 0; i < scoreTrk.scoresP1.size(); i++) {
-//            if (scoreTrk.scoresP1.get(i) != null) {
-//                arrayScores1[i] = scoreTrk.scoresP1.get(i);
-//            }
-//        }
-//        for(int i = 0; i < scoreTrk.scoresP2.size(); i++) {
-//            if (scoreTrk.scoresP2.get(i) != null) {
-//                arrayScores2[i] = scoreTrk.scoresP2.get(i);
-//            }
-//        }
-//        outState.putIntArray("arrayScores1", arrayScores1);
-//        outState.putIntArray("arrayScores2", arrayScores2);
-//
-//        int[] undoArrayScores1 = new int[undoScoreTrk.scoresP1.size()];
-//        int[] undoArrayScores2 = new int[undoScoreTrk.scoresP2.size()];
-//        for(int i = 0; i < undoScoreTrk.scoresP1.size(); i++) {
-//            if (undoScoreTrk.scoresP1.get(i) != null){
-//                undoArrayScores1[i] = undoScoreTrk.scoresP1.get(i);
-//            }
-//        }
-//        for(int i = 0; i < undoScoreTrk.scoresP2.size(); i++) {
-//            if (undoScoreTrk.scoresP2.get(i) != null) {
-//                undoArrayScores2[i] = undoScoreTrk.scoresP2.get(i);
-//            }
-//        }
-//        outState.putIntArray("undoArrayScores1", undoArrayScores1);
-//        outState.putIntArray("undoArrayScores2", undoArrayScores2);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        Log.i("restoreInstanceState", "RESTORE Instance called");
         setsPlayerOne = savedInstanceState.getInt("setsPlayerOne");
         setsPlayerTwo = savedInstanceState.getInt("setsPlayerTwo");
         gamesPlayerOne = savedInstanceState.getInt("gamesPlayerOne");
@@ -247,14 +222,14 @@ public class MainActivity extends AppCompatActivity {
         undoScoreTrk.scoresP1 = savedInstanceState.getIntegerArrayList("undoScoreTrk.scoresP1");
         undoScoreTrk.scoresP2 = savedInstanceState.getIntegerArrayList("undoScoreTrk.scoresP2");
 
-        if(savedInstanceState.getBoolean("buttonsDisabled")){
+        if (savedInstanceState.getBoolean("buttonsDisabled")) {
             ImageButton buttonA = findViewById(R.id.add_points_player_one);
             ImageButton buttonB = findViewById(R.id.add_points_player_two);
             buttonA.setEnabled(false);
             buttonB.setEnabled(false);
         }
 
-        if(savedInstanceState.getBoolean("tblScoresVisible")){
+        if (savedInstanceState.getBoolean("tblScoresVisible")) {
             displayScoreTable(scoresP1Line, scoresP2Line, true);
         }
 
@@ -275,23 +250,12 @@ public class MainActivity extends AppCompatActivity {
         displayAll();
         TextView tvWin = findViewById(R.id.win_message);
         tvWin.setText(savedInstanceState.getString("winText"));
-
-        //        int[] arrayScores1 = savedInstanceState.getIntArray("arrayScores1");
-//        for (int intValue : arrayScores1){
-//            scoreTrk.scoresP1.add(intValue);
-//        }
-//        int[] arrayScores2 = savedInstanceState.getIntArray("arrayScores2");
-//        for (int intValue : arrayScores2){
-//            scoreTrk.scoresP2.add(intValue);
-//        }
-//        int[] undoArrayScores1 = savedInstanceState.getIntArray("undoArrayScores1");
-//        for (int intValue : undoArrayScores1){
-//            undoScoreTrk.scoresP1.add(intValue);
-//        }
-//        int[] undoArrayScores2 = savedInstanceState.getIntArray("undoArrayScores2");
-//        for (int intValue : undoArrayScores2){
-//            undoScoreTrk.scoresP2.add(intValue);
-//        }
+        TextView tvPoints = findViewById(R.id.points);
+        tvPoints.setText(savedInstanceState.getString("tvPointsText"));
+        TextView pointsP1 = findViewById(R.id.player_one_points);
+        TextView pointsP2 = findViewById(R.id.player_two_points);
+        pointsP1.setText(savedInstanceState.getString("pointsP1text"));
+        pointsP2.setText(savedInstanceState.getString("pointsP2text"));
     }
 
     /**
@@ -414,7 +378,6 @@ public class MainActivity extends AppCompatActivity {
         undoState = true;
         resetState = false;
         setJustOver = false;
-        //resetDuringTie = tiebreak;
         undoSave();
         setAllZero();
         displayAll();

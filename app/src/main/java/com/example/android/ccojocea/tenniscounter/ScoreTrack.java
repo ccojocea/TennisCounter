@@ -29,9 +29,9 @@ import java.util.List;
  */
 
 public class ScoreTrack {
-    ArrayList<Integer> scoresP1 = new ArrayList<>();
-    ArrayList<Integer> scoresP2 = new ArrayList<>();
-    int currentSet;
+    public ArrayList<Integer> scoresP1 = new ArrayList<>();
+    public ArrayList<Integer> scoresP2 = new ArrayList<>();
+    public int currentSet;
 
     public static String toMyString(List<?> list) {
         String result = "";
