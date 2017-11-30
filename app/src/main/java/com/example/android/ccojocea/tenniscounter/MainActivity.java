@@ -35,6 +35,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private int undoPointsPlayerTwo;
     private boolean tiebreak;
     private boolean undoTiebreak;
-    private boolean resetDuringTie;
+    //private boolean resetDuringTie;
     private boolean undoState;
     private boolean resetState;
     private int currentSet;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i("saveInstanceState", "SAVE Instance called");
+//        Log.i("saveInstanceState", "SAVE Instance called");
         outState.putInt("setsPlayerOne", setsPlayerOne);
         outState.putInt("setsPlayerTwo", setsPlayerTwo);
         outState.putInt("gamesPlayerOne", gamesPlayerOne);
@@ -141,17 +142,80 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("undoPointsPlayerTwo", undoPointsPlayerTwo);
         outState.putBoolean("tiebreak", tiebreak);
         outState.putBoolean("undoTiebreak", undoTiebreak);
-        outState.putBoolean("resetDuringTie", resetDuringTie);
         outState.putBoolean("undoState", undoState);
         outState.putBoolean("resetState", resetState);
         outState.putInt("currentSet", currentSet);
         outState.putBoolean("setJustOver", setJustOver);
+
+        outState.putString("scoresP1Line", scoresP1Line);
+        outState.putString("undoScoresP1Line", undoScoresP1Line);
+        outState.putString("scoresP2Line", scoresP2Line);
+        outState.putString("undoScoresP2Line", undoScoresP2Line);
+        outState.putBoolean("gameOver", gameOver);
+        outState.putBoolean("gameOverForUndo", gameOverForUndo);
+
+        outState.putIntegerArrayList("scoreTrk.scoresP1", scoreTrk.scoresP1);
+        outState.putIntegerArrayList("scoreTrk.scoresP2", scoreTrk.scoresP2);
+        outState.putIntegerArrayList("undoScoreTrk.scoresP1", undoScoreTrk.scoresP1);
+        outState.putIntegerArrayList("undoScoreTrk.scoresP2", undoScoreTrk.scoresP2);
+
+        ImageButton buttonA = findViewById(R.id.add_points_player_one);
+        boolean buttonsDisabled = false;
+        if(buttonA.isEnabled()){
+            outState.putBoolean("buttonsDisabled", buttonsDisabled);
+        } else {
+            buttonsDisabled = true;
+            outState.putBoolean("buttonsDisabled", buttonsDisabled);
+        }
+
+        TableLayout tblScores = findViewById(R.id.scores_table_layout);
+        boolean tblScoresVisible = false;
+        if(tblScores.getVisibility() == View.VISIBLE){
+            tblScoresVisible = true;
+            outState.putBoolean("tblScoresVisible", tblScoresVisible);
+        }else{
+            outState.putBoolean("tblScoresVisible", tblScoresVisible);
+        }
+
+        TextView tvWin = findViewById(R.id.win_message);
+        String winText = tvWin.getText().toString();
+        outState.putString("winText", winText);
+
+//        int[] arrayScores1 = new int[scoreTrk.scoresP1.size()];
+//        int[] arrayScores2 = new int[scoreTrk.scoresP2.size()];
+//        for(int i = 0; i < scoreTrk.scoresP1.size(); i++) {
+//            if (scoreTrk.scoresP1.get(i) != null) {
+//                arrayScores1[i] = scoreTrk.scoresP1.get(i);
+//            }
+//        }
+//        for(int i = 0; i < scoreTrk.scoresP2.size(); i++) {
+//            if (scoreTrk.scoresP2.get(i) != null) {
+//                arrayScores2[i] = scoreTrk.scoresP2.get(i);
+//            }
+//        }
+//        outState.putIntArray("arrayScores1", arrayScores1);
+//        outState.putIntArray("arrayScores2", arrayScores2);
+//
+//        int[] undoArrayScores1 = new int[undoScoreTrk.scoresP1.size()];
+//        int[] undoArrayScores2 = new int[undoScoreTrk.scoresP2.size()];
+//        for(int i = 0; i < undoScoreTrk.scoresP1.size(); i++) {
+//            if (undoScoreTrk.scoresP1.get(i) != null){
+//                undoArrayScores1[i] = undoScoreTrk.scoresP1.get(i);
+//            }
+//        }
+//        for(int i = 0; i < undoScoreTrk.scoresP2.size(); i++) {
+//            if (undoScoreTrk.scoresP2.get(i) != null) {
+//                undoArrayScores2[i] = undoScoreTrk.scoresP2.get(i);
+//            }
+//        }
+//        outState.putIntArray("undoArrayScores1", undoArrayScores1);
+//        outState.putIntArray("undoArrayScores2", undoArrayScores2);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.i("restoreInstanceState", "RESTORE Instance called");
+//        Log.i("restoreInstanceState", "RESTORE Instance called");
         setsPlayerOne = savedInstanceState.getInt("setsPlayerOne");
         setsPlayerTwo = savedInstanceState.getInt("setsPlayerTwo");
         gamesPlayerOne = savedInstanceState.getInt("gamesPlayerOne");
@@ -166,11 +230,34 @@ public class MainActivity extends AppCompatActivity {
         undoPointsPlayerTwo = savedInstanceState.getInt("undoPointsPlayerTwo");
         tiebreak = savedInstanceState.getBoolean("tiebreak");
         undoTiebreak = savedInstanceState.getBoolean("undoTiebreak");
-        resetDuringTie = savedInstanceState.getBoolean("resetDuringTie");
         undoState = savedInstanceState.getBoolean("undoState");
         resetState = savedInstanceState.getBoolean("resetState");
         currentSet = savedInstanceState.getInt("currentSet");
         setJustOver = savedInstanceState.getBoolean("setJustOver");
+
+        scoresP1Line = savedInstanceState.getString("scoresP1Line");
+        scoresP2Line = savedInstanceState.getString("scoresP2Line");
+        undoScoresP1Line = savedInstanceState.getString("undoScoresP1Line");
+        undoScoresP2Line = savedInstanceState.getString("undoScoresP2Line");
+        gameOver = savedInstanceState.getBoolean("gameOver");
+        gameOverForUndo = savedInstanceState.getBoolean("gameOverForUndo");
+
+        scoreTrk.scoresP1 = savedInstanceState.getIntegerArrayList("scoreTrk.scoresP1");
+        scoreTrk.scoresP2 = savedInstanceState.getIntegerArrayList("scoreTrk.scoresP2");
+        undoScoreTrk.scoresP1 = savedInstanceState.getIntegerArrayList("undoScoreTrk.scoresP1");
+        undoScoreTrk.scoresP2 = savedInstanceState.getIntegerArrayList("undoScoreTrk.scoresP2");
+
+        if(savedInstanceState.getBoolean("buttonsDisabled")){
+            ImageButton buttonA = findViewById(R.id.add_points_player_one);
+            ImageButton buttonB = findViewById(R.id.add_points_player_two);
+            buttonA.setEnabled(false);
+            buttonB.setEnabled(false);
+        }
+
+        if(savedInstanceState.getBoolean("tblScoresVisible")){
+            displayScoreTable(scoresP1Line, scoresP2Line, true);
+        }
+
         if (undoState) {
             Button undoButton = findViewById(R.id.undo_button);
             undoButton.setEnabled(true);
@@ -186,6 +273,25 @@ public class MainActivity extends AppCompatActivity {
             resetButton.setEnabled(false);
         }
         displayAll();
+        TextView tvWin = findViewById(R.id.win_message);
+        tvWin.setText(savedInstanceState.getString("winText"));
+
+        //        int[] arrayScores1 = savedInstanceState.getIntArray("arrayScores1");
+//        for (int intValue : arrayScores1){
+//            scoreTrk.scoresP1.add(intValue);
+//        }
+//        int[] arrayScores2 = savedInstanceState.getIntArray("arrayScores2");
+//        for (int intValue : arrayScores2){
+//            scoreTrk.scoresP2.add(intValue);
+//        }
+//        int[] undoArrayScores1 = savedInstanceState.getIntArray("undoArrayScores1");
+//        for (int intValue : undoArrayScores1){
+//            undoScoreTrk.scoresP1.add(intValue);
+//        }
+//        int[] undoArrayScores2 = savedInstanceState.getIntArray("undoArrayScores2");
+//        for (int intValue : undoArrayScores2){
+//            undoScoreTrk.scoresP2.add(intValue);
+//        }
     }
 
     /**
@@ -194,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveGames(int currentSet, int gamesPlayerOne, int gamesPlayerTwo) {
         scoreTrk.scoresP1.add(gamesPlayerOne);
         scoreTrk.scoresP2.add(gamesPlayerTwo);
-        scoreTrk.setCurrentSet(currentSet);
+        scoreTrk.currentSet = currentSet;
         scoresP1Line = ScoreTrack.toMyString(scoreTrk.scoresP1);
         scoresP2Line = ScoreTrack.toMyString(scoreTrk.scoresP2);
 
@@ -308,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
         undoState = true;
         resetState = false;
         setJustOver = false;
-        resetDuringTie = tiebreak;
+        //resetDuringTie = tiebreak;
         undoSave();
         setAllZero();
         displayAll();

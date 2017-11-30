@@ -21,7 +21,6 @@
 
 package com.example.android.ccojocea.tenniscounter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +28,9 @@ import java.util.List;
  * Created by ccojo on 11/28/2017.
  */
 
-public class ScoreTrack implements Serializable {
-    List<Integer> scoresP1 = new ArrayList<>();
-    List<Integer> scoresP2 = new ArrayList<>();
+public class ScoreTrack {
+    ArrayList<Integer> scoresP1 = new ArrayList<>();
+    ArrayList<Integer> scoresP2 = new ArrayList<>();
     int currentSet;
 
     public static String toMyString(List<?> list) {
@@ -40,10 +39,6 @@ public class ScoreTrack implements Serializable {
             result = result + "  " + list.get(i);
         }
         return result;
-    }
-
-    public void setCurrentSet(int i) {
-        currentSet = i;
     }
 
     public static ScoreTrack copy(ScoreTrack st) {
