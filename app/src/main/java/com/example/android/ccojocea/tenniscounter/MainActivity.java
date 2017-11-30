@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private String undoScoresP2Line;
     private boolean gameOver;
     private boolean gameOverForUndo;
+    int height;
 
     /**
      * The one which brings light into darkness!
@@ -186,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
         TextView tvWin = findViewById(R.id.win_message);
         String winText = tvWin.getText().toString();
         outState.putString("winText", winText);
+
+        outState.putInt("height", height);
     }
 
     @Override
@@ -250,8 +253,19 @@ public class MainActivity extends AppCompatActivity {
         displayAll();
         TextView tvWin = findViewById(R.id.win_message);
         tvWin.setText(savedInstanceState.getString("winText"));
+
         TextView tvPoints = findViewById(R.id.points);
         tvPoints.setText(savedInstanceState.getString("tvPointsText"));
+
+        height = savedInstanceState.getInt("height");
+
+        if (tiebreak) {
+            tvPoints.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_medium));
+            tvPoints.setHeight(height);
+        } else {
+            tvPoints.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_large));
+        }
+
         TextView pointsP1 = findViewById(R.id.player_one_points);
         TextView pointsP2 = findViewById(R.id.player_two_points);
         pointsP1.setText(savedInstanceState.getString("pointsP1text"));
@@ -414,15 +428,17 @@ public class MainActivity extends AppCompatActivity {
         undoRestore();
         displayAll();
         if (pointsPlayerOne > 40 | pointsPlayerTwo > 40) {
-            if (pointsPlayerOne - pointsPlayerTwo > 0) {
-                displayAdvPlayerOne("Adv");
-                displayAdvPlayerTwo("-");
-            } else if (pointsPlayerOne - pointsPlayerTwo < 0) {
-                displayAdvPlayerOne("-");
-                displayAdvPlayerTwo("Adv");
-            } else {
-                displayAdvPlayerOne("-");
-                displayAdvPlayerTwo("-");
+            if(!tiebreak){
+                if (pointsPlayerOne - pointsPlayerTwo > 0) {
+                    displayAdvPlayerOne("Adv");
+                    displayAdvPlayerTwo("-");
+                } else if (pointsPlayerOne - pointsPlayerTwo < 0) {
+                    displayAdvPlayerOne("-");
+                    displayAdvPlayerTwo("Adv");
+                } else {
+                    displayAdvPlayerOne("-");
+                    displayAdvPlayerTwo("-");
+                }
             }
         }
         if (tiebreak) {
@@ -591,8 +607,6 @@ public class MainActivity extends AppCompatActivity {
     private void displayPoints(String points) {
         TextView pointsView = findViewById(R.id.points);
         pointsView.setText(points);
-
-        int height;
 
         if (tiebreak) {
             height = pointsView.getHeight();
